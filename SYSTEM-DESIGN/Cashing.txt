@@ -1,0 +1,2 @@
+=> Cashe Policy(LFU, LRU)
+=> Thrashing

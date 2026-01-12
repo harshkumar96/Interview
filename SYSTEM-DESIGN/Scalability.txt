@@ -1,0 +1,13 @@
+=> Vertical scaling means larger Machine that can Process request faster
+    1) Load Balancer not required
+    2) Single point of failure
+    3) Inter Process Communication
+    4) Data Consistency (e.g. Transactions)
+    5) Hardware Limitations
+
+=> Horizontal scaling more machines to handle request
+    1) Load Balancer required
+    2) Resilient
+    3) Network call betwwen servers (RPC)
+    4) Data Inconsistency (e.g. Transactions)
+    5) Scale Well as users increase

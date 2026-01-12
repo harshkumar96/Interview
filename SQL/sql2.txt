@@ -1,0 +1,740 @@
+=> Difference: SQL vs NoSQL
+| Feature            | SQL (Relational DB)                   | NoSQL (Non-Relational DB)                       |
+| ------------------ | ------------------------------------- | ----------------------------------------------- |
+| **Data Model**     | Tables (rows & columns)               | Document, Key–Value, Graph, Column              |
+| **Schema**         | Fixed, predefined                     | Flexible, dynamic                               |
+| **Scaling**        | Vertical scaling                      | Horizontal scaling (sharding)                   |
+| **Consistency**    | Strong consistency (ACID)             | Eventual consistency (CAP AP/CP)                |
+| **Query Language** | SQL                                   | Varies (MongoDB Query, GraphQL-like, CQL, etc.) |
+| **Joins**          | Supported (strong)                    | Limited or no joins                             |
+| **Transactions**   | Full ACID by default                  | Some support ACID (MongoDB 4.0+)                |
+| **Performance**    | Slower at massive scale due to joins  | Faster for large distributed systems            |
+| **Storage Format** | Structured                            | Semi-structured or unstructured                 |
+| **Best For**       | Banking, ERP, finance, reporting      | Real-time apps, IoT, logs, social media         |
+| **Examples**       | MySQL, PostgreSQL, Oracle, SQL Server | MongoDB, Redis, Cassandra, DynamoDB             |
+
+=> Explain ACID
+ACID = Atomicity, Consistency, Isolation, Durability
+    Atomicity — “All or Nothing” : A transaction must either fully happen or not happen at all.
+    Consistency — “Valid State → Valid State” : After a transaction, the database must remain in a valid, correct state following all rules, 
+    constraints, relationships.
+    Isolation — “No Interference” : Multiple transactions running at the same time should not affect each other.
+    Durability — “Once Saved, It Stays Saved”
+ACID ensures: transactions are complete (Atomic), valid (Consistent), isolated (Independent), and permanent (Durable).
+
+| Category | Full Form                    | Purpose             | Commands                      |
+| -------- | ---------------------------- | ------------------- | ----------------------------- |
+| **DDL**  | Data Definition Language     | Define structure    | CREATE, ALTER, DROP, TRUNCATE |
+| **DML**  | Data Manipulation Language   | Modify data         | INSERT, UPDATE, DELETE, MERGE |
+| **DQL**  | Data Query Language          | Query data          | SELECT                        |
+| **DCL**  | Data Control Language        | Permissions         | GRANT, REVOKE                 |
+| **TCL**  | Transaction Control Language | Manage transactions | COMMIT, ROLLBACK, SAVEPOINT   |
+
+=> Why indexes speed up reads
+Indexes speed up reads because they let the database avoid scanning the entire table and instead jump directly to the location of the required data
+just like an index in a book
+DB looks at a sorted structure (B-Tree / Hash)
+Locates data in logarithmic time (O(log n))
+
+| Feature                    | MySQL (InnoDB)                      | PostgreSQL                                  |
+| -------------------------- | ----------------------------------- | ------------------------------------------- |
+| **Table Storage**          | Clustered (primary index = table)   | Heap (separate from indexes)                |
+| **Primary Index**          | Clustered                           | Normal B-Tree index                         |
+| **Secondary Index Lookup** | Needs PK lookup (extra step)        | Needs heap lookup (extra step + MVCC check) |
+| **Full-text Search**       | InnoDB FULLTEXT (limited)           | GIN/GiST (very powerful)                    |
+| **JSON Indexing**          | Partial indexes & generated columns | GIN on JSONB (super fast)                   |
+| **Index Types**            | B-tree, Fulltext, Spatial           | B-tree, Hash, GIN, GiST, BRIN, SP-GiST      |
+| **MVCC Impact**            | Stored in index                     | Requires heap check → slower index scans    |
+
+MySQL’s index = faster for primary key queries because data is clustered.
+PostgreSQL’s index = more powerful and flexible but requires heap lookups + MVCC checks.
+
+| Feature       | PostgreSQL                 | MySQL (InnoDB)                    |
+| ------------- | -------------------------- | --------------------------------- |
+| Architecture  | Process-based              | Thread-based                      |
+| Storage       | Heap                       | Clustered index                   |
+| MVCC          | Row versioning inside heap | Undo logs                         |
+| Cleanup       | VACUUM needed              | No VACUUM needed                  |
+| Index Lookup  | Index → heap → MVCC check  | Secondary index → PK lookup → row |
+| JSON          | JSONB + GIN (elite)        | Slower JSON                       |
+| Query Planner | Very advanced              | Good but simpler                  |
+| Write Speed   | Slower for heavy writes    | Faster                            |
+| Read Speed    | Needs heap check           | Clustered = faster                |
+
+=> How to indentify that a query is slow
+To identify if a query is slow, you don’t guess — you use tools, logs, metrics, and query plans.
+Here’s the clean, practical, backend-engineer guide 👇
+1. Using EXPLAIN / EXPLAIN ANALYZE (Best Method)
+2. Slow Query Logs
+3. Check Query Execution Time Manually
+4. Monitor Server Metrics
+5. Look for Common Signs in Query Behavior
+6. Check Table + Index Stats
+7. Stale Statistics
+SUPER SIMPLE RULES TO IDENTIFY SLOW QUERIES
+| Symptom                        | Meaning                      |
+| ------------------------------ | ---------------------------- |
+| Long execution time            | Query is slow                |
+| EXPLAIN shows full scan        | Query is slow                |
+| CPU/I/O spikes                 | Query is slow                |
+| Rows examined >> rows returned | Inefficient query            |
+| Slow query logs catching query | Confirmed slow               |
+| Index not used                 | Query will get slow at scale |
+| Locks / deadlocks              | Query blocked → slow         |
+
+=> How to fix slow query
+    1) Add Proper Indexes (Most Important Fix)
+        Common indexing fixes:
+        ✔ Index columns used in WHERE
+        ✔ Index columns used in JOIN
+        ✔ Index columns used in ORDER BY
+        ✔ Index columns used in GROUP BY
+    2) Avoid SELECT *
+    3) Use EXPLAIN / EXPLAIN ANALYZE to Find Bottlenecks
+        Seq Scan (Postgres)
+        ALL (MySQL)
+        Row count too high
+        Using temporary; Using filesort
+    4) Rewrite Slow Subqueries / Correlated Queries
+    5) Avoid Functions on Indexed Columns
+    6) Add Composite Indexes (When Needed)
+    7) Fix Sorting (ORDER BY) Performance
+    8) Optimize Pagination (Avoid Large OFFSET)
+    9) Analyze / Vacuum (Postgres)
+    10) Increase Cache & Tune DB Parameters
+
+=> Type of index 
+| Index Type           | Used In                  | Best For                     |
+| -------------------- | ------------------------ | ---------------------------- |
+| **B-Tree**           | MySQL, PostgreSQL        | Most queries, range, sorting |
+| **Hash**             | PostgreSQL, MySQL MEMORY | Equality comparisons         |
+| **Full-Text**        | MySQL, PostgreSQL        | Text search                  |
+| **Bitmap**           | Oracle                   | Low-cardinality columns      |
+| **GiST**             | PostgreSQL               | Ranges, geometric, fuzzy     |
+| **GIN**              | PostgreSQL               | JSONB, arrays, full-text     |
+| **BRIN**             | PostgreSQL               | Huge tables, time-series     |
+| **Spatial (R-Tree)** | MySQL, PostGIS           | Geolocation                  |
+| **Unique**           | All                      | Uniqueness constraints       |
+| **Composite**        | All                      | Multi-column filtering       |
+
+=> Indexing best practices for performance
+    1) Index Columns Used in WHERE Clauses
+    2) Index Columns Used in JOINs
+    3) Index Columns Used in ORDER BY
+    4) Index Columns Used in GROUP BY
+    5) Use Composite Indexes for Multi-Column Filters
+    6) Avoid Indexing Every Column
+    7) Never Use Functions on Indexed Columns
+    8) Use Covering Indexes for Very Hot Queries
+    9) Index Low-Cardinality Columns Carefully
+    10) Use Partial (Filtered) Indexes (PostgreSQL)
+    11) Avoid Redundant Indexes
+    12) Be Careful with LIKE
+    13) Index Long Text Carefully
+        -> MySQL supports FULLTEXT
+        -> PostgreSQL supports GIN/GIST
+    14) Monitor Index Usage
+    15) Cluster Table by Index (PostgreSQL only)
+
+=> Join vs Subquery performance
+    Short Answer (What Most Senior Engineers Know)
+    -> JOINs are usually faster
+    -> Subqueries are usually slower, especially correlated subqueries
+    -> Modern SQL engines sometimes convert subqueries INTO joins internally
+    But the real reason is in how they execute.
+    1) JOINs Perform Better Because They Use Indexes Efficiently
+    2) Subqueries Often Cause Repeated Queries (Nested Loops)
+    3) Subqueries Usually Prevent Optimizer from Reordering for Speed
+    4) Independent (Non-correlated) Subqueries Are Sometimes Equivalent to JOINs
+    JOIN vs SUBQUERY Performance (Table)
+| Technique                            | Fast? | Why?                                                          |
+| ------------------------------------ | ----- | ------------------------------------------------------------- |
+| **JOIN**                             | ⭐⭐⭐⭐⭐ | Uses multiple join algorithms, index scans, optimizer freedom |
+| **Simple Subquery (IN)**             | ⭐⭐⭐⭐  | DB may rewrite into JOIN                                      |
+| **Subquery in FROM (Derived Table)** | ⭐⭐⭐   | Works OK but may require materialization                      |
+| **Correlated Subquery**              | ⭐     | Extremely slow (runs repeatedly)                              |
+| **NOT IN subquery**                  | ⭐     | Often forces full table scan                                  |
+
+Performance Ranking (Fastest → Slowest)
+    1) JOIN with proper indexes
+    2) WHERE EXISTS
+    3) IN (SELECT) (simple)
+    4) Derived table subquery (FROM)
+    5) Correlated subquery (worst)
+
+=> Scalar subquery
+    A scalar subquery is a subquery that returns exactly ONE value — one row and one column.
+    Think of it like a small function call inside your SQL statement.
+    A scalar subquery is a subquery used where a single value is expected:
+    ✔ SELECT ✔ WHERE ✔ ORDER BY ✔ HAVING
+    It must return: One row One column
+    If it returns more than one value → ERROR.
+
+    Scalar Subquery in SELECT:
+    SELECT 
+    name,
+    (SELECT COUNT(*) FROM orders o WHERE o.user_id = u.id) AS total_orders
+    FROM users u;
+
+    Scalar Subquery in WHERE:
+    SELECT *
+    FROM employees
+    WHERE salary > (
+        SELECT AVG(salary) FROM employees
+    );
+
+    Scalar Subquery in ORDER BY:
+    SELECT name
+    FROM users
+    ORDER BY (
+        SELECT MAX(order_date) 
+        FROM orders o 
+        WHERE o.user_id = users.id
+    ) DESC;
+
+    Scalar Subquery Characteristics
+    | Feature           | Description                                  |
+    | ----------------- | -------------------------------------------- |
+    | Returns           | Exactly **one value**                        |
+    | Used in           | SELECT, WHERE, HAVING, ORDER BY              |
+    | If returns >1 row | Error: *“Subquery returned more than 1 row”* |
+    | If returns 0 rows | Treated as `NULL`                            |
+    | Performance       | Can be slow (if correlated)                  |
+=> Scalar Subquery Types
+    Non-Correlated Scalar Subquery:
+        Does NOT depend on the outer query.
+        SELECT * FROM products
+        WHERE price > (SELECT AVG(price) FROM products);
+    
+    Correlated Scalar Subquery
+        Depends on outer query — runs for each row → slow.
+        SELECT 
+            name,
+            (SELECT SUM(amount) FROM orders o WHERE o.user_id = u.id)
+        FROM users u;
+
+=> Window Functions
+=> Multi-step CTE chains (Common Table Expressions)
+    Here is the clean, backend-engineer explanation of Multi-step CTE chains (Common Table Expressions) — 
+    why they’re used, how they work internally, performance considerations, and best practices.
+
+=> Advanced Indexing
+    Covering index
+    Partial index
+    Prefix index
+    Filtered index
+    Index cardinality
+    Clustered vs Non-clustered indexes
+
+=> What is a Query Planner?
+    The Query Planner (also called the optimizer) is the brain of the database. 👉 It takes your SQL query, analyzes it, and decides 
+    the fastest possible way to run it. It does NOT execute the query — it plans it.
+    The Query Planner chooses things like:
+    -> which index to use
+    -> which JOIN method to use
+    -> which table to scan first
+    -> whether to use a full table scan
+    -> how to sort, filter, aggregate
+    -> memory/disk strategy
+    This determines 90% of your query performance.
+
+=> PostgreSQL vs MySQL Query Planner
+| Feature         | PostgreSQL                          | MySQL                                    |
+| --------------- | ----------------------------------- | ---------------------------------------- |
+| Optimizer       | Very advanced                       | Good but simpler                         |
+| Statistics      | per-table + per-column + histograms | per-table + per-index                    |
+| CTE handling    | Inline after PG12                   | Inline always                            |
+| Join algorithms | nested loop, hash, merge            | nested loop only (MySQL 8 has hash join) |
+| Extensibility   | Supports custom operators           | Less flexible                            |
+
+=> What is a Page Split?
+    A page split happens when a database index page (typically 8 KB in PostgreSQL, 16 KB in MySQL InnoDB) is full, and the DB needs to insert a new key into it.
+    Since pages in a B-tree are sorted, the DB must keep order.
+    If the target leaf page has no space → 👉 it splits into two pages.
+
+=> What is a Deadlock?
+    A deadlock occurs when two or more transactions are waiting on each other’s locks, and none can proceed.
+
+=> What is Transaction Management?
+    Transaction Management ensures that a group of SQL operations are treated as one atomic unit — either all succeed or none happen.
+    A transaction is like a “package” of operations. If any step fails → database rolls back.
+    | Command                       | Meaning                            |
+    | ----------------------------- | ---------------------------------- |
+    | `BEGIN` / `START TRANSACTION` | Start a transaction                |
+    | `COMMIT`                      | Save all changes                   |
+    | `ROLLBACK`                    | Undo all changes                   |
+    | `SAVEPOINT`                   | Create partial rollback checkpoint |
+    | `ROLLBACK TO SAVEPOINT`       | Undo only to a specific point      |
+
+=> Designing Efficient Schemas
+    1. NORMALIZATION
+        Normalization is a design technique to structure database tables to:
+            -> Reduce duplication
+            -> Improve data integrity
+            -> Avoid update anomalies
+            -> Make writes consistent
+        1NF — First Normal Form: A table is in 1NF if:
+            -> No repeating groups
+            -> No arrays / lists inside a single column
+            -> Each cell contains a single value
+            -> Rows are unique
+        2NF — Second Normal Form
+        2NF applies only when you have a composite primary key. A table is in 2NF if:
+            -> It is in 1NF
+            -> No non-key column depends on part of a composite key
+        (i.e., no partial dependency)
+        3NF — Third Normal Form: A table is in 3NF if:
+            -> It is in 2NF
+            -> No column depends on another non-primary column
+        (i.e., no transitive dependency)
+    2. Denormalization in Real Systems
+        Normalization = fewer writes, more joins
+        Denormalization = more writes, fewer joins
+        In high-traffic systems, we often denormalize for performance.
+            When denormalize?
+            Use-case 1: Avoid heavy JOINs
+            Example: Store user_name inside orders table to avoid JOIN per request.
+
+            Use-case 2: Pre-calculate summary fields
+            Example: Store total_price inside orders instead of summing items every time.
+
+            Use-case 3: Improve read-heavy workloads
+            Analytics dashboards → often denormalized tables.
+            
+            Use-case 4: Cache computed values
+            Materialized views, summary tables.
+    Trade-offs: Normalization vs Denormalization
+        | Normalization   | Denormalization       |
+        | --------------- | --------------------- |
+        | Fast writes     | Fast reads            |
+        | Small storage   | Large storage         |
+        | Consistent data | Risk of inconsistency |
+        | More JOINs      | Fewer JOINs           |
+        | Complex queries | Simple queries        |
+        | Good for OLTP   | Good for analytics    |
+
+    3. JSON Column vs Separate Table
+    | Criteria         | JSON Column              | Separate Table     |
+    | ---------------- | ------------------------ | ------------------ |
+    | Writes           | Fast, flexible           | Slower, strict     |
+    | Reads            | Slow for indexed queries | Very fast          |
+    | Indexing         | Limited                  | Full               |
+    | Structure        | Flexible                 | Strict             |
+    | Schema changes   | Easy                     | Hard               |
+    | Relationships    | Not possible             | Full FK support    |
+    | Performance      | Good for small metadata  | Best for core data |
+    | Query complexity | Simple                   | Complex JOINs      |
+
+=> What is difference between DBMS and RDBMS
+    DBMS (Database Management System)
+    A software system used to store and manage data.
+    Characteristics: 
+    -> Stores data as files (hierarchical, network, or other formats)
+    -> No enforced relationships between data
+    -> No strict rules for data integrity
+    -> Suitable for small applications
+    Examples: File System, XML DB, Redis, MongoDB (non-relational)
+
+    RDBMS (Relational Database Management System)
+    A type of DBMS that stores data in a relational (table-based) format.
+    Characteristics: 
+    -> Uses tables (rows + columns)
+    -> Relationships enforced using keys (Primary, Foreign)
+    -> Follows ACID properties
+    -> Supports normalization to reduce redundancy
+    -> Suitable for large/complex applications
+    Examples: MySQL, PostgreSQL, SQL Server, Oracle
+
+    Key Differences 
+    | Feature         | DBMS                | RDBMS                       |
+    | --------------- | ------------------- | --------------------------- |
+    | Data Storage    | Files (non-tabular) | Tables (rows, columns)      |
+    | Relationships   | Not supported       | Supported via keys          |
+    | Data Integrity  | Weak or none        | Strong (constraints, keys)  |
+    | Normalization   | Not required        | Required                    |
+    | ACID Compliance | Mostly no           | Yes                         |
+    | Security        | Limited             | Strong (roles, permissions) |
+    | Scalability     | Low                 | High                        |
+    | Examples        | MongoDB, File DB    | MySQL, PostgreSQL           |
+
+=> What is primary key and foreign key
+    Primary Key:
+    A Primary Key (PK) is a column (or set of columns) in a table that uniquely identifies each row.
+    Key Points:
+    -> Must be unique
+    -> Cannot be NULL
+    -> Only one primary key per table (but it can be composite)
+    -> Ensures each row is identifiable (like an Aadhaar Number)'
+
+    Foreign Key:
+    A Foreign Key (FK) is a column in one table that refers to the Primary Key of another table.
+    Key Points:
+    -> Creates relationship between two tables
+    -> Ensures referential integrity (child cannot reference non-existing parent)
+    -> Can have duplicates
+    -> Can be NULL based on design
+
+=> What are constraints and there types
+    Constraints are rules applied to table columns to restrict invalid data and maintain data integrity in a database.
+    They ensure:
+    -> No wrong data gets inserted
+    -> Data relationships remain valid
+    -> Database stays consistent
+    | **Constraint**                 | **Purpose**                              | **Allows NULL?**                     | **Allows Duplicate?** | **Example**                                  |
+    | ------------------------------ | ---------------------------------------- | ------------------------------------ | --------------------- | -------------------------------------------- |
+    | **PRIMARY KEY**                | Uniquely identifies each row             | ❌ No                                | ❌ No                 | `PRIMARY KEY (id)`                           |
+    | **FOREIGN KEY**                | Creates relationship with another table  | ✔ Yes (if allowed)                   | ✔ Yes                 | `FOREIGN KEY (user_id) REFERENCES users(id)` |
+    | **UNIQUE**                     | Ensures all values are unique            | ✔ Yes (1 NULL allowed, DB-dependent) | ❌ No                 | `UNIQUE (email)`                             |
+    | **NOT NULL**                   | Prevents NULL values                     | ❌ No                                | ✔ Yes                 | `name VARCHAR(50) NOT NULL`                  |
+    | **CHECK**                      | Ensures value meets condition            | ✔ Yes                                | ✔ Yes                 | `CHECK (age >= 18)`                          |
+    | **DEFAULT**                    | Sets default value when none is provided | ✔ Yes                                | ✔ Yes                 | `status VARCHAR(20) DEFAULT 'active'`        |
+    | **INDEX** *(not a constraint)* | Speeds query performance                 | ✔ Yes                                | ✔ Yes                 | `INDEX idx_name(name)`                       |
+    | **AUTO_INCREMENT / IDENTITY**  | Auto generates incremental numbers       | ❌ No (auto-handled)                 | ❌ No                 | `id INT AUTO_INCREMENT`                      |
+    | **COMPOSITE KEY**              | PK using multiple columns                | ❌ No                                | ❌ No                 | `PRIMARY KEY (order_id, product_id)`         |
+
+=> Explain DDL and DML Commands in sql
+    DDL – Data Definition Language:
+    DDL commands are used to define or modify the structure of the database objects like tables, schemas, indexes, etc.
+    Key Characteristics: 
+    -> Affects structure, not data
+    -> Auto-commit (cannot be rolled back in many DBs)
+    -> Faster, metadata-level operations
+    | Command      | Purpose                                                   |
+    | ------------ | --------------------------------------------------------- |
+    | **CREATE**   | Creates a new table, database, index, view, etc.          |
+    | **ALTER**    | Modifies an existing table structure (add/remove columns) |
+    | **DROP**     | Deletes table/database permanently                        |
+    | **TRUNCATE** | Removes all rows from a table (faster than DELETE)        |
+    | **RENAME**   | Renames a table                                           |
+
+    DML – Data Manipulation Language
+    DML commands are used to insert, update, delete, and retrieve data from tables.
+    Key Characteristics
+    -> Affects data, not structure
+    -> Supports transactions (can rollback)
+    -> Slower than DDL because it manipulates row-level data
+    | Command    | Purpose                                                                  |
+    | ---------- | ------------------------------------------------------------------------ |
+    | **INSERT** | Adds new records                                                         |
+    | **UPDATE** | Modifies existing records                                                |
+    | **DELETE** | Removes specific records                                                 |
+    | **SELECT** | Retrieves data (sometimes categorized as DRL but widely accepted in DML) |
+
+=> What is difference between delete, drop and TRUNCATE statement
+    | Feature              | DELETE            | TRUNCATE         | DROP                 |
+    | -------------------- | ----------------- | ---------------- | -------------------- |
+    | Removes data         | ✔ Yes (rows)      | ✔ Yes (all rows) | ❌ No — removes table|
+    | Removes structure    | ❌ No             | ❌ No            | ✔ Yes                |
+    | WHERE clause allowed | ✔ Yes             | ❌ No            | ❌ No                |
+    | Rollback possible    | ✔ Yes             | ❌ Usually No    | ❌ No                |
+    | Speed                | Slow              | Faster           | Fastest              |
+    | Auto-increment reset | ❌ No             | ✔ Yes            | N/A                  |
+    | Log type             | Row-level logging | Minimal logging  | Metadata operation   |
+    | Type                 | DML               | DDL              | DDL                  |
+
+=> Group By Vs Order By Clause
+    GROUP BY:
+    Used to group rows that have the same values and apply aggregate functions.
+    Purpose:
+    -> Summarize data
+    -> Used with SUM, COUNT, AVG, MAX, MIN
+    When to Use: 
+    When you want aggregated results per category/group.
+
+    ORDER BY:
+    Used to sort the output of a query.
+    Purpose:
+    Sort data ascending (ASC) or descending (DESC)
+    When to Use:
+    When you want the results ordered, not grouped.
+    | Feature               | GROUP BY                                 | ORDER BY               |
+    | --------------------- | ---------------------------------------- | ---------------------- |
+    | Purpose               | Groups rows and aggregates data          | Sorts rows in output   |
+    | Use Case              | Summaries (COUNT, SUM, AVG, etc.)        | Sorting results        |
+    | Requires Aggregation? | Usually yes                              | No                     |
+    | Column Behavior       | Columns must be aggregate or in GROUP BY | Any column can be used |
+    | Ordering              | Does NOT sort by default                 | Explicit sorting       |
+    | Example               | Group sales by region                    | Sort sales by amount   |
+
+=> Difference Between Where And Having Clauses
+    | Feature                | WHERE            | HAVING                      |
+    | ---------------------- | ---------------- | --------------------------- |
+    | Filters on             | Individual rows  | Groups created by GROUP BY  |
+    | Works with aggregates? | ❌ No             | ✔ Yes                      |
+    | Execution order        | Before GROUP BY  | After GROUP BY              |
+    | Use case               | Filter raw data  | Filter aggregated results   |
+    | Example                | `WHERE age > 18` | `HAVING SUM(sales) > 10000` |
+
+=>  Aggregate Function with Example
+    Aggregate functions perform a calculation on a group of rows and return a single value.
+    Used mostly with: GROUP BY, HAVING
+    e.g. SUM, COUNT, MIN AVG, MAX
+
+=> Indexing and Clustered Indexing
+    | Feature                | Clustered Index        | Non-Clustered Index   |
+    | ---------------------- | ---------------------- | --------------------- |
+    | Physical order of data | ✔ Yes                  | ❌ No                 |
+    | Number per table       | **1 only**             | Many allowed          |
+    | Storage                | Holds actual data      | Holds keys + pointers |
+    | Speed                  | Faster for range scans | Faster for lookups    |
+    | Example                | Primary key            | Secondary indexes     |
+
+=> Normalisation and Different Types of Normal Forms
+    | Normal Form | What it Removes          | Key Rule                               |
+    | ----------- | ------------------------ | -------------------------------------- |
+    | **1NF**     | Repeating groups         | Atomic values                          |
+    | **2NF**     | Partial dependency       | Full dependency on full PK             |
+    | **3NF**     | Transitive dependency    | Non-key depends only on PK             |
+    | **BCNF**    | Special dependency cases | Left side must be super key            |
+    | **4NF**     | Multi-valued dependency  | No independent multi-valued attributes |
+    | **5NF**     | Join dependency          | Break complex relations                |
+
+=> Union and Union All Operator in SQL
+    UNION: Combines results of two SELECT queries and removes duplicate rows.
+    Key Points:
+    -> Performs duplicate elimination
+    -> Slower (because it must sort & remove duplicates)
+    -> Returns only unique rows
+    UNION ALL: Combines results of two SELECT queries and keeps duplicates.
+    Key Points:
+    -> Does not remove duplicates
+    -> Faster (no sorting or deduplication)
+    -> Returns all rows
+    | Feature            | UNION               | UNION ALL             |
+    | ------------------ | ------------------- | --------------------- |
+    | Removes duplicates | ✔ Yes               | ❌ No                 |
+    | Speed              | Slower              | Faster                |
+    | Sorting required   | ✔ Yes               | ❌ No                 |
+    |   Use case         | Need unique results | Need complete results |
+    | Performance        | Lower               | Higher                |
+
+=> What is a View in SQL?
+    A View is a virtual table created from a SQL query.
+    It:
+    -> Does not store actual data (stores only the SQL query)
+    -> Pulls data from underlying tables whenever accessed
+    -> Acts like a saved SELECT querys
+
+    Characteristics of a View: 
+    -> Contains columns and rows like a table, but data is not stored
+    -> Based on one or more tables (joins allowed)
+    -> Provides data security (restricts columns)
+    -> Simplifies complex queries
+    -> Automatically updates when base tables change
+    ⭐ Types of Views
+    1️⃣ Simple View
+    -> Based on one table
+    -> No functions or groupings
+    2️⃣ Complex View
+    -> Based on multiple tables
+    -> May include JOIN, GROUP BY, functions
+    3️⃣ Materialized View (DB-specific)
+    -> Stores data physically
+    -> Faster for heavy read operations
+    -> Needs to be refreshed manually/automatically
+    4️⃣ Updatable View
+    -> You can INSERT/UPDATE/DELETE through the view, if:
+    -> View is based on one table
+    -> Does not have: DISTINCT, GROUP BY, aggregate functions, joins
+    5️⃣ Non-Updatable View
+    -> Most complex views cannot be updated.
+
+=> Materialized View vs Normal View
+    1. Normal View (Virtual View): 
+    A normal view is a virtual table that shows data dynamically from underlying tables.
+    ✔ Key Features
+    -> Does NOT store data
+    -> Stores only the query
+    -> Always shows up-to-date data
+    -> Computed on every access
+    -> Slower for heavy queries
+    -> No storage consumption (except metadata)
+
+    2. Materialized View:
+    A materialized view stores data physically (precomputed & saved).
+    ✔ Key Features
+    -> Stores data on disk like a table
+    -> Faster for heavy SELECT queries
+    -> Must be refreshed to update data
+    -> Consumes physical storage
+    -> Useful in analytics, reporting, OLAP systems
+    | Feature            | Normal View     | Materialized View         |
+    | ------------------ | --------------- | ------------------------- |
+    | Stores data?       | ❌ No           | ✔ Yes                     |
+    | Speed              | Slower          | Faster                    |
+    | Always up-to-date? | ✔ Yes           | ❌ No (needs refresh)     |
+    | Storage needed?    | ❌ Minimal      | ✔ High                    |
+    | Maintained by?     | Query execution | Periodic REFRESH          |
+    | Good for?          | Real-time data  | Heavy analytics/reporting |
+    | Refresh required?  | ❌ No           | ✔ Yes (manual/auto)       |
+    | Data computed      | On every query  | Once during refresh       |
+
+=> Types of Materialized View Refresh
+    | Refresh Type  | Description                      | Speed     | Requirement    |
+    | ------------- | -------------------------------- | --------- | -------------- |
+    | **Complete**  | Rebuilds entire MV               | Slow      | None           |
+    | **Fast**      | Applies only changes             | Fastest   | MV Logs needed |
+    | **Force**     | Chooses between Fast/Complete    | Medium    | DB decides     |
+    | **On Commit** | Refreshes per transaction commit | Real-time | Slower writes  |
+    | **On Demand** | Manual refresh                   | N/A       | Manual trigger |
+    | **Scheduled** | Auto-refresh on time interval    | N/A       | Scheduler      |
+
+=> Index on Materialized View
+    Materialized views store data physically, just like a table. Because of this, you can create indexes on materialized views to improve query performance.
+    This works just like creating indexes on normal tables.
+    When to Create Indexes on MV
+    | Use Case              | Index Needed? | Why                           |
+    | --------------------- | ------------- | ----------------------------- |
+    | Analytics & reporting | ✔ Yes         | Faster reads                  |
+    | Frequent joins        | ✔ Yes         | Improves join speed           |
+    | Heavy refresh load    | ⚠️ Maybe      | Too many indexes slow refresh |
+    | MV used rarely        | ❌ No          | Waste of storage             |
+
+=> How Can You Convert Text into Date Format?
+    Converting text (string/varchar) to a date requires parsing the string into a valid date using built-in functions.
+    MySQL: SELECT STR_TO_DATE('25-12-2025', '%d-%m-%Y');
+    PostgreSQL: SELECT TO_DATE('12/31/2025', 'MM/DD/YYYY');
+    Oracle: SELECT TO_DATE('31-01-2025', 'DD-MM-YYYY') FROM dual;
+
+=> Pattern Matching in SQL
+    Pattern matching is used to search for text using specific patterns instead of exact matches.
+    SQL provides two major ways:
+    1) LIKE operator
+    2) Regular Expressions (REGEXP / RLIKE) — DB-specific
+    | Wildcard            | Meaning                             | Example Match               |
+    | ------------------- | ----------------------------------- | --------------------------- |
+    | `%`                 | Matches **0 or more** characters    | `A%` → "A", "Alex", "Admin" |
+    | `_`                 | Matches **exactly one** character   | `A_` → "An", "Al"           |
+    | `[ ]` (SQL Server)  | Match any character inside bracket  | `[abc]%`                    |
+    | `[^ ]` (SQL Server) | NOT match characters inside bracket | `[^a]%`                     |
+
+=> What is the difference between CHAR and VARCHAR2?
+    | Feature     | **CHAR**                                       | **VARCHAR2**                            |
+    | ----------- | ---------------------------------------------- | --------------------------------------- |
+    | Meaning     | Fixed-length character data                    | Variable-length character data          |
+    | Storage     | Always uses full defined size                  | Uses only needed space                  |
+    | Performance | Faster (fixed storage)                         | Slightly slower (variable size)         |
+    | Padding     | Pads extra space with spaces                   | No padding                              |
+    | Best for    | Fixed-size values (e.g., country code, gender) | Variable-length strings (names, emails) |
+    | Max Size    | Up to 2000 bytes                               | Up to 4000 bytes                        |
+
+=> What is the purpose of the UNIQUE constraint?
+    The UNIQUE constraint ensures that all values in a column (or combination of columns) are distinct. This prevents duplicate values and 
+    helps maintain data integrity.
+
+=> What is a composite primary key?
+    A Composite Primary Key is a primary key made up of two or more columns that together uniquely identify each row in a table.
+    👉 No single column is unique by itself,
+    👉 But the combination of columns is unique.
+    📌 Properties of Composite Primary Keys
+    | Property          | Description                           |
+    | ----------------- | ------------------------------------- |
+    | Uniqueness        | Combination of columns must be unique |
+    | Nulls allowed?    | ❌ No column can be NULL               |
+    | Number of columns | 2 or more                             |
+    | Used in           | Junction/bridge tables                |
+
+=> Explain correlated subqueries and provide an example use case
+    A correlated subquery is a subquery that depends on the current row of the outer query—i.e., it references columns from the outer query and 
+    is re-evaluated for each outer row.
+    Example use case employees paid above their own department’s average:
+    SELECT e.employee_id, e.name, e.salary, e.department_id
+    FROM employees e
+    WHERE e.salary >
+          (SELECT AVG(e2.salary)
+        FROM employees e2
+        WHERE e2.department_id = e.department_id);
+
+=> How SQL Query FLOW Works (Universal Rule)
+    SQL is declarative You tell WHAT you want, not HOW to do it.
+    So SQL reorders your query internally and runs it in a fixed priority order.
+    This is the actual order SQL follows 👇
+    1️⃣ FROM
+    2️⃣ JOIN / ON 
+    3️⃣ WHERE
+    4️⃣ GROUP BY
+    5️⃣ HAVING
+    6️⃣ SELECT
+    7️⃣ DISTINCT
+    8️⃣ ORDER BY
+    9️⃣ LIMIT / OFFSET
+    SELECT department, COUNT(*) AS total
+    FROM employees
+    WHERE salary > 50000
+    GROUP BY department
+    HAVING COUNT(*) > 3
+    ORDER BY total DESC
+    LIMIT 2;
+    | Feature    | WHERE           | HAVING         |
+    | ---------- | --------------- | -------------- |
+    | Filters    | Rows            | Groups         |
+    | Runs       | Before GROUP BY | After GROUP BY |
+    | Aggregates | ❌ No           | ✅ Yes         |
+
+    TABLE
+     ↓ FROM
+    ROWS
+     ↓ WHERE
+    FILTERED ROWS
+     ↓ GROUP BY
+    GROUPS
+     ↓ HAVING
+    FILTERED GROUPS
+     ↓ SELECT
+    COLUMNS
+     ↓ ORDER BY
+    SORTED RESULT
+     ↓ LIMIT
+    FINAL OUTPUT
+
+    1) Locate table metadata
+    2) Check permissions
+    3) Load table structure
+    4) Decide access method:
+        -> Full table scan
+        -> Index scan
+        -> Index-only scan
+    FINAL GOLDEN RULES (NO MERCY SUMMARY)
+    1) FROM decides data
+    2) WHERE filters rows
+    3) GROUP BY changes row → group
+    4) HAVING filters groups
+    5) SELECT creates output
+    6) ORDER BY sorts output
+    7) LIMIT trims output
+    8) Aliases exist only after SELECT
+    9) WHERE ≠ HAVING
+    10) You write top-down, SQL runs bottom-up
+
+=> Subqueries flow (general rule)
+    SELECT *
+    FROM employees
+    WHERE salary > (SELECT AVG(salary) FROM employees);
+    ➡️ Subquery runs first
+    ➡️ Its result is passed to outer query
+    🧠 Inner → Outer always
+
+=> 🧠 JOIN + WHERE flow example
+    SELECT u.name, o.amount
+    FROM users u
+    JOIN orders o ON u.id = o.user_id
+    WHERE o.amount > 1000;
+    Order:
+    1) FROM users
+    2) JOIN orders
+    3) Match ON condition
+    4) Filter by WHERE
+    5) SELECT columns
+
+=> CTE
+=> LEAD AND LAG
+
+
+
+
+
+
+
+
+
+

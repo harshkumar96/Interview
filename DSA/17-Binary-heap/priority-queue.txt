@@ -1,0 +1,7 @@
+A priority queue is a type of queue that arranges elements based on their priority values.
+-> Each element has a priority associated. When we add an item, it is inserted in a position based on its priority.
+-> Elements with higher priority are typically retrieved or removed before elements with lower priority.
+-> Binary heap is the most common method to implement a priority queue. In binary heaps, we have easy access to the min (in min heap) 
+   or max (in max heap) and binary heap being a complete binary tree are easily implemented using arrays. Since we use arrays, 
+   we have cache friendliness advantage also.
+-> Priority Queue is used in algorithms such as Dijkstra's algorithm, Prim's algorithm, and Huffman Coding.

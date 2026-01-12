@@ -1,0 +1,55 @@
+=> SQL COUNT Function - The SQL COUNT aggregate function is used to count the number of rows in a database table.
+=> SQL MAX Function - The SQL MAX aggregate function allows us to select the highest (maximum) value for a certain column.
+=> SQL MIN Function - The SQL MIN aggregate function allows us to select the lowest (minimum) value for a certain column.
+=> SQL AVG Function - The SQL AVG aggregate function selects the average value for certain table column.
+=> SQL SUM Function - The SQL SUM aggregate function allows selecting the total for a numeric column.
+=> SQL SQRT Functions - This is used to generate a square root of a given number.
+=> SQL RAND Function - This is used to generate a random number using SQL command.
+=> SQL CONCAT Function - This is used to concatenate any string inside any SQL command.
+=> SQL Numeric Functions - Complete list of SQL functions required to manipulate numbers in SQL.
+=> SQL String Functions - Complete list of SQL functions required to manipulate strings in SQL.
+=> ABS() - Returns the absolute value of numeric expression.
+
+SQL Numeric Function
+
+=> ACOS() - Returns the arccosine of numeric expression. Returns NULL if the value is not in the range -1 to 1.
+=> ASIN() - Returns the arcsine of numeric expression. Returns NULL if value is not in the range -1 to 1
+=> CEIL() - Returns the smallest integer value that is not less than passed numeric expression
+=> CEILING() - Returns the smallest integer value that is not less than passed numeric expression
+=> CONV() - Convert numeric expression from one base to another.
+=> FLOOR() - Returns the largest integer value that is not greater than passed numeric expression.
+=> FORMAT() - Returns a numeric expression rounded to a number of decimal places.
+=> LOG() - Returns the natural logarithm of the passed numeric expression.
+=> LOG10() - Returns the base-10 logarithm of the passed numeric expression.
+=> MOD() - Returns the remainder of one expression by diving by another expression.
+=> OCT() - Returns the string representation of the octal value of the passed numeric expression. Returns NULL if passed value is NULL.
+=> POW() - Returns the value of one expression raised to the power of another expression
+=> POWER() - Returns the value of one expression raised to the power of another expression
+=> ROUND() - Returns numeric expression rounded to an integer. Can be used to round an expression to a number of decimal points
+
+SQL String Function
+
+=> ASCII(str) - Returns the numeric value of the leftmost character of the string str. Returns 0 if str is the empty string. Returns
+    NULL if str is NULL. ASCII() works for characters with numeric values from 0 to 255.
+=> CHAR(N,... [USING charset_name]) => CHAR() interprets each argument N as an integer and returns a string consisting of the characters 
+    given by the code values of those integers. NULL values are skipped.
+=> CHAR_LENGTH(str) - Returns the length of the string str measured in characters. A multi-byte character counts as a single character.
+    This means that for a string containing five two-byte characters, LENGTH() returns 10, whereas CHAR_LENGTH() returns 5.
+=> CONCAT(str1,str2,...) - Returns the string that results from concatenating the arguments. May have one or more arguments. If all
+    arguments are non-binary strings, the result is a non-binary string. If the arguments include any binary strings, the
+    result is a binary string. A numeric argument is converted to its equivalent binary string form;
+=> CONCAT_WS(separator,str1,str2,...) - CONCAT_WS() stands for Concatenate With Separator and is a special form of CONCAT(). The first argument is
+    the separator for the rest of the arguments. The separator is added between the strings to be concatenated. The
+    separator can be a string, as can the rest of the arguments. If the separator is NULL, the result is NULL
+=> CONV(N,from_base,to_base) - Converts numbers between different number bases
+=> LEFT(str,len) - Returns the leftmost len characters from the string str, or NULL if any argument is NULL.
+=> LOCATE(substr,str,pos) - Returns the position of the first occurrence of substring
+=> LOWER(str) - Returns the string str with all characters changed to lowercase according to the current character set mapping.
+=> REGEXP - Pattern matching using regular expressions
+=> REPLACE() - Replaces occurrences of a specified string
+=> REVERSE() - Reverses the characters in a string
+=> RIGHT() - Returns the specified rightmost number of characters
+=> SUBSTRING() - Returns the substring as specified
+=> SUBSTRING_INDEX - Returns a substring from a string before the specified number of occurrences of the delimiter
+=> TRIM - Removes leading and trailing spaces
+=> UPPER - Converts to uppercase

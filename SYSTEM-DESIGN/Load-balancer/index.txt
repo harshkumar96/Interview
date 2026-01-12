@@ -1,0 +1,3 @@
+=> Floating IP 
+=> Primary and Secondary Loadbalancer 
+=> Redundancy

@@ -1,0 +1,12 @@
+Searching Alog 
+1) Linear Search
+2) Binary Search
+
+Linear Search 
+Simple Searh Alog O(n)
+
+Binary Search
+Divide it in Two Half as array is sorted O(log n)
+
+Bubble Sort:
+1) 

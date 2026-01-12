@@ -1,0 +1,56 @@
+=> How to handle high read volume
+    1) Caching: TTL
+
+=> How to handle Write heavy 
+    1) Async write with Queue service
+    2) LMS Tree based Databases like casandra
+
+=> Qouram based replication
+=> Load balancers
+    -> Roles of load balancers
+    -> Challanges of load balancers
+    -> passive load balancers
+    -> advantages of load balancers
+    -> Load balancers algo
+=> CDN
+=> Cash Computing
+=> System Monitoring Tools: Promethous and grafana setup alerts
+=> Sharding and its methods
+=> LLD And HLD
+=> Difference between Monolithic and microservice and its advantages and disadvantges
+=> How to reduce letancy 
+    -> Caching
+    -> CDN
+    -> 
+=> Throughput
+    cause of low Throughput
+    how to increase Throughput
+    Throughput and letancy relation
+
+=> Lamport logical clock
+
+=> Difference in redudancy and replication
+=> Active redudancy and passive redudancy
+=> Caching Techniques
+=> Virtual IP
+=> Cashing eviction Techniques
+=> why horizontal scaling is difficult in RDMS
+=> Normalization and denormlization
+=> synchronous and Async communication
+=> communication protocols
+    -> Push
+    -> Push/Polling
+    -> Long Polling
+    -> Socket
+    -> Server Sent events
+=> SOA and microservice Difference
+=> Forward proxy an reverse proxy
+=> url shortening
+=> nginx api gateway
+=> ipv4 and ipv6 Difference
+=> protocols
+=> Grpc
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+=> 

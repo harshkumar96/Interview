@@ -1,0 +1,11 @@
+A Binary Heap is a complete binary tree that stores data efficiently, allowing quick access to the maximum or minimum element, 
+depending on the type of heap. It can either be a Min Heap or a Max Heap. In a Min Heap, the key at the root must be the smallest 
+among all the keys in the heap, and this property must hold true recursively for all nodes. Similarly, a Max Heap follows 
+the same principle, but with the largest key at the root.
+
+A Binary Heap is a Complete Binary Tree. A binary heap is typically represented as an array.
+The root element will be at arr[0].
+The below table shows indices of other nodes for the ith node, i.e., arr[i]:
+arr[(i-1)/2] Returns the parent node
+arr[(2*i)+1] Returns the left child node
+arr[(2*i)+2] Returns the right child node

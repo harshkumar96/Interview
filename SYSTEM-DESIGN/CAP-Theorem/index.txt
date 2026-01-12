@@ -1,0 +1,141 @@
+=> CAP Stands for Consistency Availability and Partition Tolerance
+
+=> Explain CAP Theorem
+    CAP Theorem says that in a distributed system, you can guarantee only two out of three at the same time:
+    -> Consistency (C)
+    -> Availability (A)
+    -> Partition Tolerance (P)
+    When a network partition happens, you must choose C or A — not both.
+    A distributed system cannot simultaneously guarantee Consistency, Availability, and Partition Tolerance.
+    1) Consistency (C)
+    All nodes see the same data at the same time
+    -> Every read returns the most recent write
+    -> No stale data
+    -> System behaves like a single machine
+    2) Availability (A)
+    Every request receives a response, even if some nodes are down
+    -> No request should fail
+    -> Response may contain stale data
+    -> System is always “up”
+    3) Partition Tolerance (P)
+    System continues to work despite network failures
+    -> Nodes can’t communicate
+    -> Messages can be delayed or dropped
+    -> This is non-negotiable in distributed systems
+
+=> Availability (A) — In Depth:
+    Availability = every request receives a response within a reasonable time
+    Key clarifications:
+    -> Response ≠ correct response
+    -> Response ≠ latest data
+    -> Availability does NOT guarantee consistency
+    -> Availability does NOT mean zero downtime
+    Availability = Successful Responses / Total Requests
+    
+=> Types of Availability
+    1) Service Availability
+        Is the service responding?
+        HTTP 200 / 4xx / controlled 5xx
+        Timeouts are failures
+        Crashes are failures
+    2) Data Availability
+        Is data readable/writable?
+        Can you read something?
+        Can you accept writes?
+        AP systems prioritize data availability even if stale.
+    3) Functional Availability
+        Can the user complete the task?
+        Example:
+        -> Login works ❌ Payment fails
+        -> System is partially unavailable
+    
+=> Availability vs Reliability vs Durability
+    | Term         | Meaning                          |
+    | ------------ | -------------------------------- |
+    | Availability | System responds                  |
+    | Reliability  | System works correctly over time |
+    | Durability   | Data is not lost                 |
+    🚨 A system can be available but unreliable
+
+=> Availability Metrics (Very Important)
+    | SLA     | Downtime / year |
+    | ------- | --------------- |
+    | 99%     | ~3.65 days      |
+    | 99.9%   | ~8.7 hours      |
+    | 99.99%  | ~52 minutes     |
+    | 99.999% | ~5 minutes      |
+👉 Every extra “9” costs exponentially more
+
+=> Why Availability Fails (Root Causes)
+    Infrastructure
+    -> Single server
+    -> Single AZ
+    -> Single load balancer
+    -> Single DB primary
+    Network
+    -> Packet loss
+    -> DNS failure
+    -> VPC misconfig
+    -> Firewall rules
+    Application
+    -> Memory leaks
+    -> Blocking I/O
+    -> Deadlocks
+    -> Thread exhaustion
+    -> Infinite retries
+    Database
+    -> Slow queries
+    -> Lock contention
+    -> Replica lag
+    -> Connection pool exhaustion
+
+=> Core Principles to Maintain Availability
+    1) Eliminate Single Point of Failure (SPOF)
+    2) Redundancy Everywhere
+
+=> Partitioning — In Depth
+    Partitioning is the technique of splitting large data or workload into smaller, independent pieces (partitions) so a system can scale, perform better, 
+    and remain available.
+    Partitioning = dividing data or requests into logical subsets that can be managed independently
+    Each partition:
+    -> Holds a subset of data
+    -> Can be stored, processed, or scaled separately
+    -> Reduces load on a single resource
+    Partitioning can happen at:
+    -> Database level
+    -> Application level
+    -> Messaging systems
+    -> Storage systems
+=> Partitioning vs Sharding (Important Distinction)
+    Partitioning is a database optimization technique where a large table or dataset is divided into smaller, manageable parts within the same database and server, 
+    mainly to improve query performance and maintenance. It does not change the overall system architecture and is mostly transparent to the application. Sharding, 
+    on the other hand, is a horizontal scaling strategy where data is distributed across multiple databases or servers (shards). Each shard stores only a portion of 
+    the data and has its own resources, allowing the system to scale beyond the limits of a single machine. While partitioning focuses on performance and manageability, 
+    sharding focuses on scalability and fault isolation, at the cost of higher complexity.
+
+    | Aspect                | Partitioning                            | Sharding                                 |
+    | --------------------- | --------------------------------------- | ---------------------------------------- |
+    | Definition            | Splitting data within a single database | Splitting data across multiple databases |
+    | Servers involved      | Single server                           | Multiple servers                         |
+    | Primary goal          | Performance & manageability             | Horizontal scalability                   |
+    | Application awareness | Not required                            | Required                                 |
+    | Resource usage        | Shared CPU, RAM, disk                   | Independent resources per shard          |
+    | Network calls         | No                                      | Yes                                      |
+    | Fault tolerance       | Low                                     | High                                     |
+    | Complexity            | Low                                     | High                                     |
+    | Typical use case      | Large tables, time-based data           | High-traffic, large-scale systems        |
+
+    | Aspect     | Partitioning        | Sharding                       |
+    | ---------- | ------------------- | ------------------------------ |
+    | Scope      | Logical division    | Physical distribution          |
+    | Location   | Same DB / same node | Multiple nodes                 |
+    | Complexity | Lower               | Higher                         |
+    | Example    | Table partitions    | User data split across servers |
+    👉 Sharding = distributed partitioning
+=> Types of Partitioning (Very Important)
+    1) Horizontal Partitioning (Most Common)
+    2) Vertical Partitioning
+    3) Functional Partitioning
+    4) Time-Based Partitioning
+    5) Hash-Based Partitioning
+    6) Range-Based Partitioning

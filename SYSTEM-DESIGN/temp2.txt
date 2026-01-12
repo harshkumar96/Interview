@@ -1,0 +1,42 @@
+=> How to answer System Design interview
+    1) Define the problem space
+    2) Clerify function and non-function requirements
+    3) Estimate amount of Data
+    4) Design system at high level
+    5) decide how server and client server communicate
+    6) Deep dive in Design
+    7) identify bottle neck and scaling oppertunity
+    8) is there single point of failure is replication is neccessary
+    9) edge cases
+    10) how to scale system 
+    11) Review and wrap up
+
+=> Aviablity and cosistency 
+=> Polling vs streaming
+=> Messaging pattern
+=> Load balancing
+=> Caching
+=> consistent Caching
+=> Trade-Offs
+
+=> Design Facebook news Feed
+=> Design Google Drive
+=> Design Uber
+=> Design Dropbox
+=> Design Whatsapp
+=> Design amazon
+=> Design netflix
+=> Hotel Booking Service
+=> Google docs Service
+=> Auto complete feature on Google
+=> Url shortening
+=> Rate limiter
+
+
+
+=> Availability
+    The percentage of time system is up and performaming its intended function
+
+
+=> Understan
+

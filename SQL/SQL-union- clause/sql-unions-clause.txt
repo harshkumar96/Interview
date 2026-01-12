@@ -1,0 +1,18 @@
+SQL UNION clause/operator is used to combine the results of two or more SELECT statements without returning any duplicate rows.
+
+To use UNION, each SELECT must have the same number of columns selected, the same number of column expressions, 
+the same data type, and have them in the same order, but they do not have to be the same length.
+
+=> The UNION ALL operator is used to combine the results of two SELECT statements including duplicate rows.
+=> SQL INTERSECT Clause: is used to combine two SELECT statements, but returns rows only from the first
+SELECT statement that are identical to a row in the second SELECT statement.
+=> SQL EXCEPT Clause : combines two SELECT statements and returns rows from the first SELECT statement
+that are not returned by the second SELECT statement.
+
+The SQL INTERSECT clause/operator is used to combine two SELECT statements, but returns rows only from the
+first SELECT statement that are identical to a row in the second SELECT statement. This means INTERSECT
+returns only common rows returned by the two SELECT statements.
+
+The SQL EXCEPT clause/operator is used to combine two SELECT statements and returns rows from the first
+SELECT statement that are not returned by the second SELECT statement. This means EXCEPT returns only
+rows, which are not available in second SELECT statement.

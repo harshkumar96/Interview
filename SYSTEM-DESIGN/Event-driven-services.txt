@@ -1,0 +1,2 @@
+=> Publisher Subscriber model
+=> Also known as event driven architeture

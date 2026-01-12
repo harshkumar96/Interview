@@ -1,0 +1,22 @@
+=> What is Quick Sort Algorithm
+    Quick sort is one of the sorting algorithms that works on the idea of divide and conquer. It takes an element as a pivot and partitions the given array 
+    around that pivot by placing it in the correct position in the sorted array. The pivot element can be selected in the following ways:
+    -> Select the First element as a pivot
+    -> Select the Last element as a pivot
+    -> Select the Middle element as a pivot
+    -> Select a Random element as a pivot
+
+=> Working of Quick Sort Algorithm
+    QuickSort works on divide and conquer. It takes one element as a pivot and moves it to the correct position in a way that all elements at left are smaller 
+    and all elements at right are greater than the pivot and hence partitions the array at the pivot and again applies the same for the created partition subarray
+
+=> Programmatic Approach for Quick Sort
+    -> First, create a recursive function that takes array, low value and high value as input and calls the partition fucntion for recursive call for partitioned arrays.
+    -> Define a partition function for last element as pivot and give the partition index of array.
+    -> Partition function iterate the given array and compare elements to pivot. If smallar then swap them to a sequential postion else no swap is performed.
+    -> At the end for iteration the pivot element is swapped to its correct position stored in i for the exact place.
+    -> Now return the latest position of the pivot element
+
+=> Quick sort is simple and easily implementable sorting technique that works on the divide and conquer approach. It is efficient for working on large dataset.
+
+=> Time complexity of quickk sort is O(N log(N)) and auxiilary space required is O(N).

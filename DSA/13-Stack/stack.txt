@@ -1,0 +1,8 @@
+=> LIFO
+
+=> Explain Stacks
+    A stack is a linear data structure that allows operations to be performed at one end, called the top. The two primary operations are:
+    -> Push: Adds an element to the top of the stack.
+    -> Pop: Removes and returns the top element from the stack
+    It fundamental data structure in computer science that follows the Last In, First Out (LIFO) principle. This means that the last element added to the stack 
+    will be the first one to be removed. Stacks are widely used in various applications, such as function call management, undo mechanisms, and parsing expressions.

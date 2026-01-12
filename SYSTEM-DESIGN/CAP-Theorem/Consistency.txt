@@ -1,0 +1,98 @@
+=> Explain Consistency
+    All clients see the same data at the same time. After a write happens, every read should return the most recent write — no stale or conflicting data.
+    In CAP, consistency is:
+    Linearizability 
+    Every read reflects the latest successful write as if all operations happened in a single global order.
+    📌 This is stronger than just “data correctness”.
+
+=> Types of Consistency (Very Important)
+    Consistency defines how up-to-date and ordered data appears across distributed systems. Strong consistency guarantees latest data at the cost of 
+    availability, while eventual consistency maximizes availability by allowing temporary inconsistencies. Between these extremes lie practical models like 
+    causal, session, and monotonic consistency, which balance correctness and performance based on application needs.
+
+    1️⃣ Strong Consistency (Linearizability)
+    After a successful write, all subsequent reads anywhere in the system return the latest value. The system behaves as if there is one single copy of data 
+    and one global timeline.
+        Guarantee:
+        -> Reads always return latest write
+        -> Global order of operations
+        How achieved:
+        -> Single leader
+        -> Synchronous replication
+        -> Majority quorum
+        Cost:
+        -> High latency
+        -> Lower availability
+        Used in:
+        -> Banking
+        -> Inventory
+        -> Payments
+    2️⃣ Eventual Consistency
+    If no new updates are made, all replicas will eventually converge. Eventual consistency prioritizes availability and scalability, allowing temporary 
+    inconsistencies that resolve over time.
+        Guarantee:
+        -> If no new writes, all replicas converge eventually
+        Reality:
+        -> Temporary stale reads allowed
+        Benefits:
+        -> High availability
+        -> Low latency
+        -> Partition tolerant
+        Used in:
+        -> Social feeds
+        -> Likes
+        -> Analytics
+    3️⃣ Causal Consistency
+    Causally related operations are seen in the same order, but unrelated operations may be seen in different orders.
+    Guarantee:
+    -> Related operations maintain order
+    -> Unrelated operations may be seen out of order
+
+=> Consistency vs Availability (CAP Trade-off)
+    | Choice | What Happens                               |
+    | ------ | ------------------------------------------ |
+    | CP     | System blocks or errors to stay consistent |
+    | AP     | System serves stale data but stays up      |
+
+=> Consistency in Distributed Databases
+    1) MongoDB
+        Default: Strong consistency for primary reads
+        Replicas → eventual consistency
+        Read Concern controls consistency
+    2) Cassandra
+        Tunable consistency:
+        -> ONE
+        -> QUORUM
+        -> ALL
+    3) Redis
+        Strong on single node
+        Eventual with replicas
+
+=> Consistency Mechanisms (How Systems Achieve It)
+    1) Leader-Based Replication
+    Leader-based replication ensures strong consistency for writes by serializing them through a single primary node.
+    -> One leader accepts writes
+    -> Followers replicate
+    ✔️ Strong consistency for leader reads
+    📌 Core Idea
+    -> One leader (primary) accepts all writes
+    -> Followers (replicas) copy data from leader
+    -> Reads may go to leader or replicas
+    2) Quorum Reads & Writes
+    3) Distributed Consensus
+    4) Locks & Transactions
+    5) Synchronous Replication
+    6) Asynchronous Replication
+    7) Versioning & Vector Clocks
+    
+
+=> What Breaks Consistency (Failure Modes)
+    | Issue               | Effect           |
+    | ------------------- | ---------------- |
+    | Network partition   | Split brain      |
+    | Async replication   | Stale reads      |
+    | Clock skew          | Wrong ordering   |
+    | Cache               | Serving old data |
+    | Multi-leader writes | Conflicts        |
+
+=> Consistency in Microservices

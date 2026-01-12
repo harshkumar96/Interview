@@ -1,0 +1,31 @@
+=> Optimize Process and increase throughput by using same resources (e.g. vertical scaling)
+=> Preparing before hand at non peak hours (e.g. 4 am);
+=> Keep backups and avoid single point of failure (e.g. Master Salve concept)
+=> Align more resources (e.g. horizontal scaling)
+=> Implement Microservice architeture
+=> Distributed System (Partitioning)
+=> Load Balancer
+=> Decoupling System
+=> Logging and Metrics 
+    1) Analytics
+    2) Auditing
+    3) Reporting
+    4) Machine Learning
+=> Extensible
+=> Message Queue (Rabit MQ KAFKA SQS)
+=> Microservice and monolithic
+=> Database Sharding
+=> Consistent Hashing
+=> Resilient
+=> DNS
+=> Gateway and load Balancer
+=> Netflix Chaos Monkey
+=> Latency and throughput
+=> Strong Coupling and lose Coupling
+=> Atomicity
+=> Idempotency
+
+
+
+=> Questions 
+    -> Design a Distributed LRU Caches

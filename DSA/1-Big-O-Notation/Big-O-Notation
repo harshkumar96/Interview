@@ -1,0 +1,75 @@
+=> What Is Big-O Notation?
+    Big-O notation measures how fast something grows. In programming, it describes how the time or space taken by an algorithm increases as the input size (n) increases.
+    -> It does NOT measure actual seconds.
+    -> It measures scalability.
+    Big-O answers: “How badly will your algorithm behave when data becomes huge?”
+    | Big-O          | Name         | Meaning                                              |
+    | -------------- | ------------ | ---------------------------------------------------- |
+    | **O(1)**       | Constant     | Fastest — doesn't depend on input size               |
+    | **O(log n)**   | Logarithmic  | Very fast even for huge input                        |
+    | **O(n)**       | Linear       | Time grows in direct proportion to n                 |
+    | **O(n log n)** | Linearithmic | Used in efficient sorting (MergeSort, QuickSort avg) |
+    | **O(n²)**      | Quadratic    | Nested loops — slow for big n                        |
+    | **O(2ⁿ)**      | Exponential  | Extremely slow (subset, recursion problems)          |
+    | **O(n!)**      | Factorial    | Worst — permutation-based brute force                |
+
+=> | Complexity     | Name         | Example        |
+    | -------------- | ------------ | -------------- |
+    | **O(1)**       | Constant     | Hash lookup    |
+    | **O(log n)**   | Logarithmic  | Binary search  |
+    | **O(n)**       | Linear       | Loop           |
+    | **O(n log n)** | Linearithmic | Merge sort     |
+    | **O(n²)**      | Quadratic    | Nested loop    |
+    | **O(n³)**      | Cubic        | Floyd-Warshall |
+    | **O(2ⁿ)**      | Exponential  | Subsets        |
+    | **O(n!)**      | Factorial    | Permutations   |
+
+=> What Is Space Complexity?
+    Space Complexity measures how much extra memory an algorithm needs as the input size (n) increases.
+    It includes:
+    -> Input space → memory used to store input
+    -> Auxiliary space → extra memory algorithm creates (arrays, variables, recursion stack)
+    When interviewers say space complexity, they mostly mean auxiliary space, not input size.
+    | Space Complexity | Meaning              | Example                            |
+    | ---------------- | -------------------- | ---------------------------------- |
+    | **O(1)**         | Constant extra space | Two-pointer, swapping, variables   |
+    | **O(log n)**     | Logarithmic          | Binary search recursion            |
+    | **O(n)**         | Linear               | Storing arrays, recursion depth n  |
+    | **O(n log n)**   | Linearithmic         | Merge sort (splits + merge arrays) |
+    | **O(n²)**        | Quadratic            | 2D matrix creation                 |
+    | **O(n!)**        | Factorial            | Generating permutations            |
+
+    | Complexity     | Example Algorithm       | Why                      |
+    | -------------- | ----------------------- | ------------------------ |
+    | **O(1)**       | Two-pointer, swapping   | Few variables only       |
+    | **O(log n)**   | Binary search recursion | Halving input            |
+    | **O(n)**       | Extra array, DFS stack  | Store n-sized data       |
+    | **O(n log n)** | Merge sort              | Recursion + merging      |
+    | **O(n²)**      | Matrix creation         | n × n memory             |
+    | **O(2ⁿ)**      | Subsets                 | exponential combinations |
+    | **O(n!)**      | Permutations            | factorial combinations   |
+
+=> What is Big-O notation? Why do we use it?
+    Answer: Big-O describes the upper bound growth rate of an algorithm’s resource use (time or space) as input size 𝑛 n → ∞. We use it to compare scalability independent of machine/time constants.
+
+=> Difference between Time Complexity and Space Complexity.
+    Answer: Time complexity = how running time grows with input size; space complexity = how extra memory (auxiliary + sometimes input) grows.
+
+=> Why do we drop constants in Big-O?
+    Answer: Big-O focuses on growth rate as n→∞; constants don’t change asymptotic behavior and are machine/implementation dependent.
+
+=> Why do we ignore lower-order terms?
+    Answer: For large n, highest-order term dominates growth; lower-order terms become negligible asymptotically.
+
+=> HashMap / HashSet
+    => Insert / search / delete complexity (avg & worst case).
+        Answer: Average O(1); worst-case O(n) when many collisions or poor hash function (degenerate chaining or probing).
+    => Why HashMap is O(1) average but O(n) worst?
+        Answer: Average assumes good hash distribution and resizing; worst-case occurs when many keys collide into one bucket causing linear scans.
+    => What affects hash collisions?
+        Answer: Poor hash function, adversarial inputs, small table size (load factor), non-uniform key distribution.
+    => What is amortized time in HashMap resizing?
+        Answer: Occasional expensive resize (O(n)) spread over many inserts gives amortized O(1) per insert.
+    
+=> 
+

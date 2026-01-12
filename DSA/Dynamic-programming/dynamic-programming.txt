@@ -1,0 +1,16 @@
+
+Dynamic programming is defined as a computer programming technique where an algorithmic problem is first broken down into sub-problems, 
+the results are saved, and then the sub-problems are optimized to find the overall solution — which usually has to do with finding 
+the maximum and minimum range of the algorithmic query.
+
+Dynamic programming is used when one can break a problem into more minor issues that they can break down even further, into even more minor problems. 
+Additionally, these subproblems have overlapped. That is, they require previously calculated values to be recomputed. With dynamic programming, 
+the computed values are stored, thus reducing the need for repeated calculations and saving time and providing faster solutions. 
+
+To design an algorithm for a problem using Dynamic Programming, the problem we want to solve must have these two properties:
+
+=> Overlapping Subproblems: Means that the problem can be broken down into smaller subproblems, where the solutions to the subproblems are overlapping. 
+Having subproblems that are overlapping means that the solution to one subproblem is part of the solution to another subproblem.
+=> Optimal Substructure: Means that the complete solution to a problem can be constructed from the solutions of its smaller subproblems. 
+So not only must the problem have overlapping subproblems, the substructure must also be optimal so that there is a way to piece the solutions to 
+the subproblems together to form the complete solution.

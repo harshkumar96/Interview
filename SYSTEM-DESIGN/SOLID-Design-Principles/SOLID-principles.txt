@@ -1,0 +1,91 @@
+=> Explain SOLID principles
+    SOLID principles are five core object-oriented design rules (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, 
+    Dependency Inversion)
+    SOLID = 5 object-oriented design principles that help you build:
+    -> maintainable systems
+    -> extensible code
+    -> low coupling, high cohesion
+    -> safer refactors in large codebases (microservices, SaaS, Mform-like systems)
+
+=> Single Responsibility principle
+    A class/module should have only one reason to change
+    ❌ What SRP does not mean
+    -> “Class should have only one method”
+    -> “Class should be small”
+    What it actually means
+    -> A class should handle one business responsibility, not multiple concerns.
+    🔗 Cohesion & Coupling in SRP:
+    SRP is achieved by maximizing Cohesion and minimizing Coupling.
+    -> Cohesion
+        Cohesion = how strongly related the responsibilities inside a class are.
+        -> High cohesion → class does one focused job
+        -> Low cohesion → class does many unrelated things
+        👉 SRP aims for HIGH cohesion
+    -> Coupling (Between classes / modules)
+        Coupling = how much one class depends on others.
+        -> Tight coupling → change in one breaks many
+        -> Loose coupling → changes are isolated
+        👉 SRP pushes toward LOW coupling
+    SRP encourages high cohesion by grouping related behavior together and low coupling by separating unrelated responsibilities, making systems easier 
+    to change and test.
+
+=> Open Closed principle
+    Software entities (classes, modules, functions) should be OPEN for extension but CLOSED for modification.
+    Meaning:
+    -> You should be able to add new behavior
+    -> without changing existing, tested code
+    Open/Closed Principle states that software components should allow new functionality through extension rather than modification, reducing regression risk.
+
+=> Liskov Substitution principle
+    Objects of a superclass should be replaceable with objects of its subclasses without breaking the correctness of the program.
+    In simple words 👇
+    👉 If B is a subtype of A, then anywhere A is used, B should work without surprises.
+    Liskov Substitution Principle ensures that subclasses can replace their base classes without altering program correctness, preserving behavioral 
+    compatibility.
+    -> Move away from Is-A way of thinking: Modern design avoids “is-a” inheritance in favor of composition, because behavior varies by context and inheritance 
+    often violates LSP.
+    -> Breaking the heirarchy if fail Substitution test: When a subclass fails the Liskov Substitution Principle, the correct fix is to break or refactor the 
+    inheritance hierarchy, usually by refining abstractions or replacing inheritance with composition.
+
+=> Interface Segregation principle
+    No client should be forced to depend on methods it does not use.
+    In short: many small, specific interfaces are better than one big, fat interface.
+
+=> Dependency Inversion principle
+    High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should 
+    depend on abstractions.
+    In simple words:
+    👉 Depend on interfaces, not concrete implementations
+
+=> Abstraction vs Interface vs Abstract Class
+    1️⃣ Abstraction (Concept): 
+    Abstraction hides implementation details and exposes only behavior.
+    -> Not a keyword
+    -> Achieved using:
+        -> Interfaces
+        -> Abstract classes
+        -> Even simple functions/modules
+    2️⃣ Interface
+    Defines a contract without implementation
+    Characteristics:
+    -> Only method signatures
+    -> No state
+    -> No implementation
+    -> Supports multiple inheritance
+    -> Perfect for DIP + Clean Architecture
+    3️⃣ Abstract Class
+    Provides partial implementation + shared state
+    Characteristics
+    -> Can have:
+        -> Abstract methods
+        -> Concrete methods
+        -> State (variables)
+    -> Single inheritance only
+    -> Stronger coupling than interface
+    | Principle | Interface      | Abstract Class     |
+    | --------- | -------------  | ------------------ |
+    | **ISP**   | ✅ Perfect fit | ⚠️ Risky           |
+    | **DIP**   | ✅ Ideal       | ⚠️ Sometimes       |
+    | **OCP**   | ✅             | ✅                 |
+    | **LSP**   | ✅             | ⚠️ Must be careful |
+

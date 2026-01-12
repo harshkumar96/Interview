@@ -1,0 +1,9 @@
+1) Interface
+2) Type Annotation and type infrence
+3) JSON.parse() return type any
+4) void type function can return null and udefinec
+5) Difference in ES2015 and ES6
+6) Adding multiple types to array
+7) Tuple
+8) Difference in Tuple and array
+9) 

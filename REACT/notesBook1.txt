@@ -1,0 +1,14 @@
+=> What is SPA(Single Page Application)
+    A Single Page Application (SPA) is a type of web application that loads only one HTML page once, and after that, updates the content dynamically using 
+    JavaScript — WITHOUT reloading the entire page.
+    In simple words:
+    -> Only one page is loaded initially
+    -> When you navigate, content changes instantly
+    -> No full page reload (no white flash)
+    -> Faster and smoother experience — just like a mobile app
+
+=> How SPA Works
+
+=> React is probably one of the best choices for building single page applications nowadays. It only delivers the view layer, but the React ecosystem is a whole 
+flexible and interchangeable framework. React has a slim API, an amazing ecosystem and a great community.
+

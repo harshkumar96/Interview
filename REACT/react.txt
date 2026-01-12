@@ -1,0 +1,278 @@
+=> Explain props 
+    In React, props (short for "properties") are a mechanism for passing data from a parent component to a child component. They are a fundamental concept for 
+    building reusable and dynamic React applications.
+    -> Data Transfer: Props serve as a channel to send information, such as strings, numbers, objects, arrays, or even functions, from a higher-level component in 
+    the component tree to a lower-level component.
+    -> Unidirectional Flow: Data flow with props is strictly unidirectional, meaning it moves from parent to child. A child component cannot directly modify the 
+    props it receives; they are considered read-only. 
+    -> Component Reusability: Props enable the creation of highly reusable components. A single component can be written and then rendered multiple times with 
+    different data passed through props, allowing for variations in its appearance or behavior without rewriting the component's logic.
+    -> Immutability: Once a component receives props, it cannot change them. If data needs to be modified, it should be managed as state within a component and then 
+    passed down as props to child components.
+
+=> Explain useState
+    useState is a React Hook that allows functional components to manage and update state, thereby enabling them to be "stateful." Introduced in React 16.8, it provides 
+    a way to add state variables to functional components, which were previously limited to class components for state management.
+    -> Stateful Variable and Setter Function: useState returns an array containing two elements: the current stateful variable and a function to update its value. This is 
+    typically destructured for easier use.
+    -> Initial State: useState accepts an optional argument, which serves as the initial value for the state variable. This value can be a primitive type (number, string, 
+    boolean), an object, or an array.
+    -> Updating State: To change the value of the state variable, the corresponding setter function must be called. Directly modifying the state variable will not trigger 
+    a re-render. 
+    -> Immutability for Objects and Arrays: When updating state that involves objects or arrays, it is crucial to treat them immutably. Instead of directly modifying the 
+    existing object or array, a new one should be created with the desired changes, often using the spread operator.
+    -> useState allows functional components to manage dynamic data that can change over time and influence the component's rendering. This facilitates the creation of 
+    interactive and dynamic user interfaces in React applications.
+
+=> Explain componentdidmount
+    componentDidMount() is a lifecycle method in React class components that is invoked immediately after a component is rendered and placed into the Document Object Model 
+    (DOM). This method is called only once during the lifetime of a component, following its initial render. 
+    Key characteristics and uses of componentDidMount():
+    -> Execution Timing: It runs after the component, and all its child components, have been rendered and successfully mounted into the DOM.
+    -> One-time Execution: Unlike render() or componentDidUpdate(), componentDidMount() is executed only once, making it suitable for tasks that should happen only 
+    after the component is fully available in the DOM.
+    -> Asynchronous Operations: It is a common place to initiate asynchronous operations like fetching data from an API (e.g., using fetch or axios). This ensures that 
+    the component is ready to receive and display the fetched data.
+    -> DOM Interaction: If a component needs to interact directly with the DOM, such as measuring element dimensions or integrating with external JavaScript libraries 
+    that require DOM access, componentDidMount() is the appropriate place to perform these actions.
+    -> Setting up Subscriptions/Event Listeners: It can be used to set up subscriptions to external data sources or add event listeners to the DOM, which should then be 
+    cleaned up in componentWillUnmount().
+
+=> Explain componentdidupdate
+    componentDidUpdate is a lifecycle method in React class components that is invoked immediately after a component's updates are flushed to the DOM. This method is 
+    not called for the initial render. 
+    Purpose and Usage:
+    -> Responding to Prop or State Changes: componentDidUpdate is primarily used to perform side effects or update the DOM in response to changes in a component's 
+    props or state.
+    -> Making Network Requests: It is a common place to initiate network requests (e.g., fetching data from an API) when certain props or state have changed. To 
+    prevent unnecessary requests, it is crucial to compare the current props/state with the previous ones.
+    -> DOM Manipulation: You can use componentDidUpdate to interact with the DOM directly after an update, if necessary, although it's generally recommended to let 
+    React handle DOM updates declaratively.
+    -> Conditional State Updates: You can call setState within componentDidUpdate, but it must be wrapped in a conditional statement to prevent infinite re-renders.
+
+=> Explain componentwillunmount
+    componentWillUnmount is a lifecycle method in React class components, invoked just before a component is unmounted and destroyed from the DOM. It is the designated 
+    place for performing any necessary cleanup operations to prevent memory leaks or unexpected behavior.
+    Purpose of componentWillUnmount:
+    -> Canceling Network Requests: If a component initiates network requests (e.g., fetching data from an API) during its lifecycle, componentWillUnmount is used to 
+    cancel those requests if they are still pending when the component is removed. This prevents unnecessary resource consumption and potential errors.
+    -> Clearing Timers: Any timers set using setTimeout or setInterval within the component should be cleared in componentWillUnmount to prevent them from continuing 
+    to run after the component is gone.
+    -> Removing Event Listeners: Event listeners attached to the DOM or other objects should be removed in componentWillUnmount to avoid memory leaks.
+    -> Cleaning up Subscriptions: If the component subscribes to any external data sources (e.g., WebSockets, Redux store), the subscriptions should be unsubscribed 
+    in componentWillUnmount.
+
+=> Explain useEffect
+    The useEffect Hook in React allows functional components to perform side effects. Side effects are actions that interact with the "outside world" of the component, 
+    such as data fetching, directly manipulating the DOM, setting up subscriptions, or using timers.
+    Basic Usage:
+    The useEffect hook takes two arguments:
+    -> A callback function (the "effect"): This function contains the code for the side effect.
+    -> An optional dependency array: This array specifies values that the effect depends on.
+    Key Concepts:
+    -> Side Effects: Operations that interact with the world outside of React's rendering process.
+    -> Dependency Array: Controls when the effect re-runs.
+    -> No dependency array: The effect runs after every render.
+    -> Empty array ([]): The effect runs only once after the initial render and the cleanup function runs when the component unmounts.
+    -> Array with dependencies ([dep1, dep2]): The effect runs after the initial render and whenever any of the specified dependencies change.
+    -> Cleanup Function: The optional function returned by the effect callback. This function runs before the next re-render (if dependencies change) or when the 
+    component unmounts, allowing for resource cleanup (e.g., removing event listeners, clearing timers).
+=> Explain useRef
+    The useRef hook in React provides a way to create a mutable reference that persists across component re-renders without causing a re-render when its value changes. 
+    It returns an object with a single current property, which can hold any mutable JavaScript value.
+
+=> Explain useContext
+    useContext is a React hook that lets functional components subscribe to a React Context, enabling data sharing across the component tree without manual prop passing 
+    (prop drilling). It simplifies accessing global or shared data like themes, user info, or language settings by allowing components deep in the hierarchy to directly 
+    read values provided by a parent Provider component, improving code readability and maintainability.
+
+=> Explain state lifting in react
+    "Lifting state up" in React is the process of moving shared state from child components to their closest common ancestor component. This pattern ensures that multiple 
+    components needing to reflect the same changing data have a single "source of truth," maintaining data consistency and allowing components to synchronize.
+
+=> Explain props drilling
+    Prop drilling in React is the process of passing data from a parent component down through several layers of intermediate components to a deeply nested component that 
+    actually needs the data. 
+
+=> Explain useLocation Hook
+    The useLocation hook is a feature of the react-router-dom library that provides access to the current location (URL) object in a functional React component. This 
+    hook is essential for client-side routing, allowing you to read details about the current path, query parameters, or state passed during navigation. 
+
+=> What is Redux?
+    Redux is a state management library used to manage global application state in a predictable way.
+    Instead of passing state through many components (props drilling), Redux stores state in one central place called the store.
+        Why Do We Need Redux?
+        Problem without Redux
+        -> State lives in components
+        -> Props drilling becomes messy
+        -> Hard to share state across distant components
+        -> Difficult to debug state changes
+        Redux solves:
+        -> Centralized state
+        -> Predictable updates
+        -> Easier debugging (time-travel debugging)
+        -> Better structure for large apps
+
+=> Redux vs useState vs Context
+    | Feature      | useState    | Context    | Redux      |
+    | ------------ | ----------- | ---------- | ---------- |
+    | Local state  | ✅          | ❌         | ❌         |
+    | Global state | ❌          | ✅         | ✅         |
+    | Performance  | High        | Medium     | High       |
+    | Debugging    | Hard        | Medium     | Easy       |
+    | Best for     | Small state | Theme/Auth | Large apps |
+
+=> Explain component of redux
+    Redux has 5 main components.
+    1) Store: 
+        What it is:
+        The single source of truth that holds the entire application state.
+        Responsibilities:
+        -> Holds state
+        -> Allows state access (getState)
+        -> Allows state updates (dispatch)
+        -> Registers listeners (subscribe)
+        Only one store per app
+        State is read-only from outside
+    2) State:
+        What it is:
+        A plain JavaScript object representing your app data.
+        Centralized
+        Immutable (never mutate directly)
+    3) Action
+        What it is:
+        A plain JS object describing what happened.
+        Rules:
+        -> Must have a type
+        -> Should be serializable
+        -> No logic inside actions
+    4) Reducer
+        What it is:
+        A pure function that decides how state changes.
+        Reducer Rules:
+        -> No mutations
+        -> No async logic
+        -> Return new state
+        -> Pure function
+        -> Multiple reducers → combined into one
+    5) Dispatch
+        What it is:
+        The only way to update Redux state.
+        -> Triggers reducer
+        -> Updates store
+        -> Causes UI re-render
+
+=> Explain forwardRef
+    forwardRef lets a parent component pass a ref to a child component so the parent can directly access a DOM element or instance inside the child.
+    By default:
+    -> ref works on DOM elements
+    -> ref ❌ does not work on normal functional components
+    forwardRef forwards the ref to a child DOM node.
+=> What is useFormStatus?
+    useFormStatus is a React hook (used mainly in Next.js App Router) that lets you track the submission state of a <form>.
+    It tells you things like:
+    -> Is the form currently submitting?
+    -> Is this submit triggered by this specific form?
+    Important Context (VERY IMPORTANT)
+    -> Works with React Server Components
+    -> Used with Server Actions
+    -> Not useful in classic client-only React apps
+    -> Not a replacement for useState
+    -> useFormStatus is form-aware, not component-aware.
+
+=> useFormState vs useFormStatus
+    useFormState → manages form data & server response
+    useFormStatus → tracks form submission status (loading)
+    They are complementary, not competitors.
+    useFormState:
+    What it does
+    -> Connects a Server Action to form state
+    -> Receives returned data / errors from server
+    -> Re-renders UI when server response changes
+    Best for
+    -> Server validation errors
+    -> Success / failure messages
+    -> Returning data from server
+
+    useFormStatus:
+    What it does
+    -> Tracks submission status
+    -> Knows if the form is pending
+    -> No data handling
+    | Feature            | useFormState          | useFormStatus    |
+    | ------------------ | --------------------- | ---------------- |
+    | Purpose            | Manage form data      | Track submission |
+    | Server response    | ✅ Yes                | ❌ No            |
+    | Loading state      | ❌ No                 | ✅ Yes           |
+    | Validation errors  | ✅ Yes                | ❌ No            |
+    | Where used         | Form component        | Child of form    |
+    | Replaces useState? | Yes (for server data) | No               |
+
+    Use useFormState when:
+    -> You need server-side validation
+    -> You want to show success/error messages
+    Use useFormStatus when:
+    -> You want to disable submit
+    -> You want a loading indicator
+
+=> Explain useTransition
+
+=> What is Derived State?
+    Derived State means:
+    State that can be calculated from props or other state
+    If you can derive a value, you usually should not store it in state.
+
+=> What is useActionState?
+    useActionState is a React hook (used with Server Actions) that lets you manage state produced by an action — especially useful for forms and mutations.
+    Think of it as:
+    State management for actions
+    It replaces many use cases of useFormState with a more general, flexible API.
+    It returns:
+    state → latest result returned by the action
+    action → function you pass to <form action={...}>
+    isPending → whether the action is currently running
+    | Feature            | useActionState       | useFormState  |
+    | ------------------ | -------------------- | ------------- |
+    | Purpose            | General action state | Form-specific |
+    | Returns loading    | ✅ Yes               | ❌ No         |
+    | Scope              | Any action           | Forms only    |
+    | Modern replacement | ✅ Yes               | ⚠️ Older      |
+    | Boilerplate        | Less                 | More          |
+
+    | Feature         | useActionState | useFormStatus |
+    | --------------- | -------------- | ------------- |
+    | Manages data    | ✅ Yes         | ❌ No         |
+    | Loading state   | ✅ Yes         | ✅ Yes        |
+    | Server response | ✅ Yes         | ❌ No         |
+    | Used in         | Form or action | Child of form |
+
+=> What is useId?
+    useId is a React hook that generates a unique, stable ID for a component instance.
+    It’s mainly used for:
+    -> Accessibility (label ↔ input)
+    -> Avoiding ID collisions
+    -> Server-Side Rendering (SSR) safety
+    
+=> What is Viet
+    
+=> What is BrowserRouter
+    BrowserRouter in React is a component from the React Router library that uses the HTML5 History API to manage navigation, creating clean, human-readable URLs 
+    (like /about) without hash symbols (#) and keeping the UI in sync with the browser's address bar, making it ideal for single-page applications (SPAs) deployed on 
+    servers that support dynamic routing. It acts as a wrapper for your entire app, enabling routing functionality and working with Routes, Route, and Link components 
+    to define different views for different URLs. 
+
+    Key Functions:
+    -> Manages URLs: Uses pushState, replaceState, and popstate events to update the URL and UI without full page reloads, providing a smooth, app-like experience.
+    -> Enables Client-Side Routing: Renders different components based on the URL path, all within the same HTML page.
+    -> Requires Server Configuration: For deep links (e.g., directly accessing /about), the server must be configured to always serve the main index.html file, 
+    letting React Router handle the rest.
+
+    How it Works:
+    1) Wrap your App: You wrap your main <App /> component (or relevant section) with <BrowserRouter>.
+    2) Define Routes: Inside, you use <Routes> to contain individual <Route> components, mapping URL paths (e.g., /) to specific elements (e.g., <Home />).
+    3) Navigate: Use <Link to="/path"> components for navigation, which trigger the router to change the URL and render the corresponding component. 
+    When to Use It:
+    -> For modern web apps where you want clean URLs and a seamless user experience.
+    -> When your server is set up to serve your single-page application's entry file for any requested route. 
+
+

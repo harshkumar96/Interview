@@ -1,0 +1,4 @@
+DELETE FROM table_name WHERE CONDITION;
+
+DELETE FROM table_name WHERE ID = 6;
+

@@ -1,0 +1,28 @@
+=> Explain Singly Linked List
+    A linked list is a linear data structure where elements are stored in nodes. Each node contains:
+    -> A value (the data it holds).
+    -> A reference (or pointer) to the next node in the sequence.
+    This structure forms a chain of nodes, starting from a head (the first node) and ending at a node whose next reference is null. Linked lists are dynamic, 
+    meaning they can grow or shrink as needed, unlike arrays with fixed sizes.
+
+=> Advantages of a Linked List
+    -> Dynamic Size: Linked lists can grow or shrink as needed during program execution, unlike arrays with fixed sizes.
+    -> Efficient Insertions/Deletions: Adding or removing elements in the middle of a linked list is generally faster than in an array (especially if you already 
+    have a reference to the node before the insertion/deletion point), as you only need to change pointers.
+    -> No Memory Waste (Potentially): Linked lists only use as much memory as they need, as nodes are allocated individually. Arrays, on the other hand, might 
+    have unused space if they're allocated with a larger size than required.
+    -> Flexible Data Structure: Linked lists are used to implement various other data structures, like stacks, queues, and graphs.
+    -> Memory Allocation Flexibility: Nodes can be stored in non-contiguous memory locations, reducing the need for large, contiguous blocks of memory.
+    
+=> Operations: 
+    -> push
+    -> pop
+    -> shift
+    -> unshift
+    -> get
+    -> set
+    -> insert
+    -> remove
+    -> reverse
+    -> print
+

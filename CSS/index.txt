@@ -1,0 +1,36 @@
+=> CSS: CSS stands for Cascading Style Sheets
+=> Explain Selector: The selector points to the HTML element you want to style.
+=> Cascading Order: 
+    What style will be used when there is more than one style specified for an HTML element?
+    All the styles in a page will "cascade" into a new "virtual" style sheet by the following rules, where number one has the highest priority:
+    -> Inline style (inside an HTML element)
+    -> External and internal style sheets (in the head section)
+    -> Browser default
+    So, an inline style has the highest priority, and will override external and internal styles and browser defaults.
+
+=> CSS Colour: In CSS, colors are specified by using a predefined color name, or with a RGB, HEX, HSL, RGBA, HSLA value.
+    RGB Value: An RGB color value represents RED, GREEN, and BLUE light sources.
+    Each parameter (red, green, and blue) defines the intensity of the color between 0 and 255.
+    RGBA Value: RGBA color values are an extension of RGB color values with an alpha channel - which specifies the opacity for a color.
+    The alpha parameter is a number between 0.0 (fully transparent) and 1.0 (not transparent at all):
+    HEX Value: A hexadecimal color is specified with: #RRGGBB.
+    Where rr (red), gg (green) and bb (blue) are hexadecimal values between 00 and ff (same as decimal 0-255).
+    HSL Value: HSL stands for hue, saturation, and lightness.
+    Hue is a degree on the color wheel (from 0 to 360):
+    -> 0 (or 360) is red
+    -> 120 is green
+    -> 240 is blue
+    HSLA Value: HSLA color values are an extension of HSL color values with an alpha channel - which specifies the opacity for a color.
+
+=> CSS Backgrounds: 
+    background property
+    -> background-color
+    -> background-image
+    -> background-repeat
+    -> background-attachment
+    -> background-position
+    -> background (shorthand property)
+    body {
+    background: #ffffff url("img_tree.png") no-repeat right top;
+    }
+=> 

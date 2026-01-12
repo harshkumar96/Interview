@@ -1,0 +1,13 @@
+1) DSA *
+2) SQL *
+3) NODEJS *
+4) Queue Services KAFKA AND SQS * 
+5) Redis *
+6) AWS 
+7) Docker 
+8) Socket
+9) Mongodb
+10) LLD & HLD (SYSTEM DESIGN)
+11) Type Script
+12) Bull npm 
+13) JAVASCRIPT *

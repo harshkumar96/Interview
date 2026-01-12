@@ -1,0 +1,109 @@
+=> React Js Pointers
+1) props
+2) useState
+3) componentdidmount
+4) componentdidupdate
+5) componentwillunmount
+6) useEffect
+7) useRef
+8) useContext
+9) stateLifting
+10) props drilling
+11) useLocation
+13) Redux
+	1) Redux Store
+	2) action
+	3) reducer
+	4) useSelector
+14) forwardRef
+15) useFormStatus
+16) useTransition
+17) Drived State
+18) shallow copy and deep copy
+19) useActionState
+20) useId Hook
+21) contextAPI
+22) Custom Hooks
+23) Browser History API
+24) SSR and CSR
+26) Nested Navigation
+27) 404 page and redirection
+28) NavLink Outlet
+29) layout route and index route
+30) Child route
+31) Route Prefix 
+32) NavLink and Active class
+33) Dynamic Routes (useParams hook)
+34) optional segment
+35) Navlink and link difference
+36) React Tailwind playlist
+37) API Full Form
+38) useActionState
+39) Input Validations
+40) useReducer
+41) lazy loading suspense
+42) USEAPI
+43) USEAPI and Fetch api difference
+44) useoptimistic 
+45) Activity Feature in react 19.2 (preserve dom and state)
+46) useEffect Event
+47) Redux and redux toolkit
+	1) Difference in Redux and Redux toolkit
+	2) Main Components of redux action, reducer, store, dispatcher and selector
+	3) extra reducer
+48) Reconcilation 
+49) Fragment
+50) Two Way Binding
+51) useImperativeHandle Hook
+52) useCallback hook
+53) useMemo()
+54) Millionjs
+55) Custom react Hooks
+56) Working With forms with forms actions
+57) Lazy loading
+58) Tanstack Query
+59) JXS
+60) React DOM
+61) Hot Module Reloading
+62) Internal Component State
+63) Unidirectional Data Flow
+64) Interactions with Forms and Events
+65) Controlled Components
+66) Split Up Components
+67) Composeable Components
+68) Reusable Components
+69) render()
+70) constructor()
+71) componentWillReceiveProps()
+72) shouldComponentUpdate()
+73) componentWillUpdate()
+74) Client- or Server-side Search
+75) Client Cache
+76) Ref a DOM Element
+77) Higher Order Components
+78) How to immplement loading
+79) Lifting State
+80) Taming the State
+81) Pure Functions
+82) Composition
+83) The Virtual DOM
+84) Stateless Functional Components
+85) Factories and Using Factories with Components
+86) Inverse Data Flow
+87) Component Lifecycles
+88) Mounting Lifecycle
+89) Updating Lifecycle
+90) React.Children
+91) Managing State Outside of React
+92) Flux and Flux Implementations
+93) Views
+94) Actions and Action Creators
+95) Dispatcher
+96) Stores
+97) Presentational Versus Container Components
+98) Isomorphism versus Universalism
+99) Server Rendering React
+100) Universal Color Organizer
+101) Universal Redux
+102) Universal Routing
+103) 

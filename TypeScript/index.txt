@@ -1,0 +1,18 @@
+=> Define Interface
+    An interface is a contract that defines the shape of an object.
+    👉 It tells TypeScript:
+    -> what properties an object must have
+    -> what methods it must implement
+    -> what are types of those properties/methods
+    It is compile-time only (removed in JS output).
+
+=> Properties of interface
+    1) Optional Properties (?)
+    2) Readonly Properties: Used when value must not change after creation.
+    3) Function Type Interface
+    4) Interface for Classes (VERY IMPORTANT):
+        👉 Enforces design consistency
+        👉 Very useful in clean architecture / LLD
+    
+=> Interface vs Type
+=> 

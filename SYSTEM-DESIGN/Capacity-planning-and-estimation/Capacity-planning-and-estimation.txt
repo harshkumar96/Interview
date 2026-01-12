@@ -1,0 +1,9 @@
+=> Component 
+    1) Traffic:
+        Number of daily active user to be expected
+        Read Heavy OR Write Heavy
+        Estimate Req per sec 
+    2) Storage
+    3) Bandwidth
+    4) Memory
+    5) Estimate Number of CPU

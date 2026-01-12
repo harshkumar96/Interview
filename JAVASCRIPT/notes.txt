@@ -1,0 +1,306 @@
+=> What is Hoisting in JavaScript?
+    Hoisting in JavaScript is a behavior where variable and function declarations are conceptually moved to the top of their respective scopes during 
+    the compilation phase, before the code is executed. This allows variables and functions to be used before they are formally declared in the code. 
+
+    Key aspects of Hoisting:
+    Declarations are hoisted, not initializations:
+    Only the declaration part of a variable or function is moved to the top of the scope. Any assigned values or initializations remain in their original position. 
+    
+    Variables declared with var:
+    These are hoisted and initialized with undefined at the top of their scope. This means you can access a var variable before its declaration, 
+    but its value will be undefined until the line of its actual initialization is reached.
+    
+    Variables declared with let and const:
+    While let and const declarations are also hoisted, they are not initialized. They enter a "Temporal Dead Zone" (TDZ) from the beginning of their scope until 
+    the line of their declaration. Attempting to access them within the TDZ will result in a ReferenceError. 
+    
+    Function declarations:
+    Entire function declarations are hoisted to the top of their scope. This allows you to call a function before its declaration in the code. 
+    
+    Function expressions (including arrow functions):
+    These are not hoisted in the same way as function declarations. If a function expression is assigned to a var, let, or const variable, 
+    only the variable declaration is hoisted, and the function itself is not accessible until the line where it is assigned.
+
+
+=> What is Type Coercion in JavaScript?
+    Type coercion is the automatic or implicit conversion of values from one data type to another (e.g., string to number, boolean to string) 
+    when performing operations.
+
+=> Data Types in JavaScript 
+    Primitive Data Types (stored by value and immutable):
+    String – Represents textual data. Example: "hello".
+    Number – Represents all numeric values including integers, floats, NaN, and Infinity. Example: 42, 3.14.
+    BigInt – Used for very large integers. Example: 123n.
+    Boolean – Represents logical values: true or false.
+    Undefined – A variable that has been declared but not assigned a value is undefined.
+    Null – Represents an explicitly empty or unknown value. It is intentionally assigned.
+    Symbol – Used to create unique identifiers. Example: Symbol("id").
+    
+    Non-Primitive (Reference) Data Types (stored by reference and mutable):
+    Object – A collection of key-value pairs. Example: { name: "Harsh" }.
+    Array – A special type of object used for ordered data. Example: [1, 2, 3].
+    Function – A callable object. Example: function() { return "Hello"; }.
+    Other built-in objects include Date, RegExp, Map, Set, etc.
+
+=> Higher-Order Functions in JavaScript
+    1) Takes another function as an argument, or
+    2) Returns another function as its result
+
+=> What is Callback Hell?
+    Callback Hell (also known as the Pyramid of Doom) refers to a situation where callbacks are nested within callbacks, leading to:
+    1) Deeply indented code
+    2) Poor readability
+    3) Harder debugging and error handling
+    4) Fragile and tightly coupled logic
+    5) Hard to trace the flow
+    6) Difficult to handle errors
+    7) Deep nesting makes logic brittle
+
+=> Promise.all(), Promise.race()
+Promise.all() Waits for all promises to resolve (or rejects immediately if any one fails).
+Promise.race() Returns a promise that settles (resolves or rejects) as soon as the first one does.
+| Feature           | `Promise.all()`                        | `Promise.race()`                   |
+| ----------------- | -------------------------------------- | ---------------------------------- |
+| Resolves when     | **All** promises resolve               | **First** promise resolves/rejects |
+| Rejects when      | **Any one** fails                      | **First** promise fails            |
+| Output on success | Array of results                       | Single result                      |
+| Use case          | Run tasks in parallel and wait for all | Timeout logic, fastest task wins   |
+
+=> Difference in Promise.any(), Promise.race()
+    Promise.race and Promise.any are both used to run multiple promises in parallel, but they differ in how they decide the final result. Promise.race 
+    settles as soon as the first promise settles, whether it resolves or rejects, meaning a fast failure can immediately reject the whole operation; this 
+    makes it ideal for scenarios like implementing timeouts or fast-fail logic. In contrast, Promise.any resolves as soon as the first promise successfully 
+    fulfills, completely ignoring rejected promises, and it only rejects if all promises fail, in which case it throws an AggregateError containing all 
+    rejection reasons. In simple terms, race cares about speed regardless of success or failure, while any cares about getting at least one successful 
+    result even if some attempts fail.
+
+=> What is parallelism and concurrency in nodejs
+    In Node.js, concurrency and parallelism describe how multiple tasks are handled, but they are not the same. Concurrency means Node.js can manage 
+    multiple tasks at the same time by switching between them, even though JavaScript runs on a single thread. This is achieved using the event loop and 
+    non-blocking asynchronous I/O, where long-running operations like file reads, database queries, or network calls are delegated to the system, allowing 
+    Node.js to keep handling other requests while waiting. Parallelism, on the other hand, means executing multiple tasks literally at the same time using 
+    multiple CPU cores. Node.js achieves parallelism through mechanisms like the Worker Threads module or the cluster module, where heavy CPU-bound tasks 
+    are run on separate threads or processes simultaneously. In short, Node.js is concurrent by default (great for I/O-heavy workloads) and can be parallel 
+    when explicitly enabled (necessary for CPU-intensive tasks).
+
+=>  What is a Closure?
+    A function that remembers the variables from its lexical scope even after the outer function has finished executing.
+    Lexical Scope = Compile-Time Scope
+    When a function is defined, it remembers the scope in which it was created — not where it is called from.
+    Closure patterns involve writing functions that capture and preserve private state using JavaScript closures. This is incredibly useful for:
+    1) Encapsulation (data hiding)
+    2) Reusable logic (function factories)
+    3) Configuration-based behavior (API factories)
+    4) Instance-based stateful APIs (e.g., caching, sessions, throttling)
+
+=> What Is Prototypal Inheritance?
+    In JavaScript, every object has a hidden internal link to another object called its prototype.
+    This prototype chain enables objects to inherit behavior from other objects.
+
+=> Object.create()
+    Object.create(): Create Object with a Custom Prototype
+    Object.create(proto) creates a new object and sets its prototype to proto.
+
+    Why Use It?
+    Pure prototypal inheritance (no constructor needed)
+    Useful for object delegation, not class-based OOP
+    Often used in frameworks or for polyfills
+
+=> __proto__
+    __proto__ — Access or Set an Object’s Prototype (Deprecated but widely used)
+    The __proto__ property allows you to get or set the internal prototype of an object.
+
+=> constructor
+    constructor — Points Back to the Function That Created the Object
+    Every object created via a constructor function or class has a constructor property pointing back to the function that created it.
+    Use Cases:Helps identify an object’s type, Used internally in many frameworks (like Mongoose), Can be overridden or faked
+
+=> How this behaves in different contexts
+The behavior of this in JavaScript depends entirely on the context in which it is used. Here's a breakdown of how this behaves 
+in different contexts:
+| Context                           | What `this` Refers To                                     | Example |
+| --------------------------------- | --------------------------------------------------------- | ------- |
+| 1. **Global Scope (non-strict)**  | Global object (`window` in browser, `global` in Node.js)  |         |
+| 2. **Global Scope (strict mode)** | `undefined`                                               |         |
+| 3. **Object Method**              | The object that owns the method                           |         |
+| 4. **Arrow Function**             | Lexically inherited from the enclosing scope              |         |
+| 5. **Constructor Function**       | A newly created object                                    |         |
+| 6. **Class Method**               | The instance of the class                                 |         |
+| 7. **Event Handler (DOM)**        | The DOM element triggering the event                      |         |
+| 8. **setTimeout / setInterval**   | In non-strict mode: `window`; In strict mode: `undefined` |         |
+| 9. **Explicit Binding**           | Set by `.call()`, `.apply()`, or `.bind()`                |         |
+
+=> Using .bind, .call, .apply
+    .call() — Invoke Immediately with Custom this
+    .apply() — Same as .call(), But Arguments in an Array
+    .bind() — Returns a New Function with Bound this
+
+=> Deep vs Shallow Copy
+| Feature            | Shallow Copy                 | Deep Copy                                  |
+| ------------------ | ---------------------------- | ------------------------------------------ |
+| Level              | First level only             | All levels (recursively)                   |
+| Shared nested refs | ✅ Yes                        | ❌ No                                       |
+| Performance        | Fast                         | Slower (more work)                         |
+| Use when           | No need to clone nested data | Need full independence of nested structure |
+
+=> What Is a Memory Leak?
+    A memory leak occurs when memory that's no longer needed isn’t released — because the GC still sees it as "reachable".
+    node --inspect app.js
+
+=> Generators (function* and yield)
+    A Generator Function in JavaScript is a special kind of function that can pause and resume its execution — making it perfect for handling 
+    iterable data, lazy evaluation, and asynchronous flows.
+
+    function* greet() {
+    yield "Hi";
+    yield "Hello";
+    yield "Hey";
+    }
+    const gen = greet();
+    console.log(gen.next()); // { value: 'Hi', done: false }
+    console.log(gen.next()); // { value: 'Hello', done: false }
+    console.log(gen.next()); // { value: 'Hey', done: false }
+    console.log(gen.next()); // { value: undefined, done: true }
+
+=> Clean code and SOLID principles in JS
+| Principle                     | Meaning                                                        | Goal                                       |
+| ----------------------------- | -------------------------------------------------------------- | ------------------------------------------ |
+| **S** – Single Responsibility | A class/module should have **only one reason to change**       | Keep code focused and simple               |
+| **O** – Open/Closed           | Code should be **open for extension, closed for modification** | Add new features without breaking old code |
+| **L** – Liskov Substitution   | Subclasses should be **replaceable by their base class**       | Ensure polymorphism works safely           |
+| **I** – Interface Segregation | Don’t force classes to **implement unused interfaces**         | Keep interfaces small and specific         |
+| **D** – Dependency Inversion  | Depend on **abstractions, not concretions**                    | Reduce coupling between modules            |
+
+Writing clean code means your code is:
+-> Easy to read
+-> Easy to change
+-> Reliable
+-> Maintainable by others
+| Principle                         | Description                             | Example                                         |
+| --------------------------------- | --------------------------------------- | ----------------------------------------------- |
+| ✅ **Meaningful Names**            | Use descriptive variable/function names | `getUserById()` not `getData()`                 |
+| ✅ **Small Functions**             | Functions should do one thing           | Avoid long, multipurpose functions              |
+| ✅ **Avoid Magic Numbers/Strings** | Use named constants instead             | `MAX_USERS = 100`                               |
+| ✅ **Use Default Parameters**      | Avoid `undefined` checks                | `function greet(name = "Guest")`                |
+| ✅ **Consistent Formatting**       | Use linters/formatters (e.g., Prettier) | Consistent spacing, indentation                 |
+| ✅ **Avoid Deep Nesting**          | Use early returns                       | Use `if (!condition) return;` instead of `else` |
+
+SOLID Principles in JavaScript
+
+
+=> Difference between call, apply, and bind.
+| Method    | Invokes the function?  | Syntax                                | Arguments                           | Use Case                                |
+| --------- | ---------------------- | ------------------------------------- | ----------------------------------- | --------------------------------------- |
+| `call()`  | ✅ Immediately          | `func.call(thisArg, arg1, arg2, ...)` | Passes arguments one by one         | Quick call with a custom `this`         |
+| `apply()` | ✅ Immediately          | `func.apply(thisArg, [argsArray])`    | Passes arguments as an array        | Same as `call()`, but with arrays       |
+| `bind()`  | ❌ Returns new function | `const fn = func.bind(thisArg, arg1)` | Passes arguments one by one or none | Delayed execution with preserved `this` |
+
+
+=> Purpose of the reduce method in arrays.
+The reduce() method in JavaScript is used to reduce an array to a single value by applying a callback function on each element — 
+from left to right — while carrying forward an accumulator.
+
+=> Explain currying in JavaScript.
+Currying is a functional programming technique where a function with multiple arguments is transformed into a sequence of functions, 
+each taking one argument at a time.
+function curriedAdd(a) {
+  return function(b) {
+    return a + b;
+  };
+}
+console.log(curriedAdd(2)(3)); // 5
+
+=> What is a generator function and its usage?
+A generator function is a special type of function that can be paused and resumed. It returns an iterator object that yields 
+values one at a time on demand.
+
+=> What are weak maps and weak sets in JavaScript?
+
+=> How does JavaScript handle memory management?
+JavaScript handles memory automatically using garbage collection — it allocates memory when you create variables, objects, arrays, etc., 
+and reclaims memory when they're no longer needed.
+
+=> What is strict mode in JavaScript and how is it enabled?
+
+=> What are the different data types present in javascript?
+| Category      | Data Type     | `typeof` Result      | Description                                     | Example                     |
+| ------------- | ------------- | -------------------- | ----------------------------------------------- | --------------------------- |
+| **Primitive** | **Number**    | `"number"`           | Numeric values including integers & floats      | `let x = 42;`               |
+|               | **BigInt**    | `"bigint"`           | Large integers beyond `Number.MAX_SAFE_INTEGER` | `let big = 1234567890n;`    |
+|               | **String**    | `"string"`           | Textual data                                    | `let name = "Alice";`       |
+|               | **Boolean**   | `"boolean"`          | Logical `true` or `false`                       | `let isDone = false;`       |
+|               | **Undefined** | `"undefined"`        | Declared but not assigned                       | `let a;`                    |
+|               | **Null**      | `"object"` *(quirk)* | Explicit absence of value                       | `let b = null;`             |
+|               | **Symbol**    | `"symbol"`           | Unique identifier                               | `let id = Symbol("id");`    |
+| **Reference** | **Object**    | `"object"`           | Key-value pairs container                       | `let obj = {name: "John"};` |
+|               | **Array**     | `"object"`           | Ordered collection (indexed)                    | `let arr = [1, 2, 3];`      |
+|               | **Function**  | `"function"`         | Callable object                                 | `function greet() {}`       |
+|               | **Date**      | `"object"`           | Date and time                                   | `new Date()`                |
+|               | **RegExp**    | `"object"`           | Regular expressions                             | `/ab+c/`                    |
+|               | **Map**       | `"object"`           | Key-value store (object keys allowed)           | `new Map()`                 |
+|               | **Set**       | `"object"`           | Unique value collection                         | `new Set()`                 |
+|               | **WeakMap**   | `"object"`           | Non-iterable, key-value store (weak refs)       | `new WeakMap()`             |
+|               | **WeakSet**   | `"object"`           | Non-iterable, weak value set                    | `new WeakSet()`             |
+
+-> typeof null returns "object" — this is a well-known bug in JavaScript.
+-> Arrays, Dates, Maps, etc., are all technically objects and return "object" from typeof.
+-> Use Array.isArray(obj) to detect arrays reliably.
+
+=> Is javascript a statically typed or a dynamically typed language?
+JavaScript is a dynamically typed language. In a dynamically typed language, the type of a variable is checked during run-time in 
+contrast to a statically typed language, where the type of a variable is checked during compile-time.
+Since javascript is a loosely(dynamically) typed language, variables in JS are not associated with any type. A variable can hold the 
+value of any data type.
+
+=> What is NaN property in JavaScript?
+NaN property represents the “Not-a-Number” value. It indicates a value that is not a legal number.
+typeof of NaN will return a Number.
+
+=> Explain passed by value and passed by reference.
+In JavaScript, primitive data types are passed by value and non-primitive data types are passed by reference.
+
+=> What do you mean by Self Invoking Functions?
+A Self-Invoking Function (also called an Immediately Invoked Function Expression, or IIFE) is a function that runs immediately 
+after it is defined.
+
+=> Describe the difference between a cookie, sessionStorage and localStorage in browsers
+These are all ways to store client-side data in the browser, but they differ in persistence, size, scope, and usage.
+| Feature            | `cookie`                             | `localStorage`                         | `sessionStorage`                   |
+| ------------------ | ------------------------------------ | -------------------------------------- | ---------------------------------- |
+| 🔁 Persistence     | Manually set via `expires`/`max-age` | Persistent until explicitly deleted    | Clears when tab/window is closed   |
+| 🌐 Scope           | Sent with every HTTP request         | Only accessible via JavaScript         | Only accessible via JavaScript     |
+| 📏 Storage Limit   | \~4 KB                               | \~5–10 MB (varies by browser)          | \~5–10 MB (varies by browser)      |
+| 🧪 Accessible via  | `document.cookie`                    | `localStorage.getItem()` etc.          | `sessionStorage.getItem()` etc.    |
+| 📬 Sent to server? | ✅ Yes (with every request)           | ❌ No                                   | ❌ No                               |
+| 🕸 Domain Scope    | Customizable (`domain`, `path`)      | Current domain only                    | Current tab + domain only          |
+| 🔐 Use Cases       | Auth tokens, server-side sessions    | Caching user preferences, themes, etc. | Form data for a single session/tab |
+
+=> What's the difference between a JavaScript variable that is: null, undefined or undeclared?
+| Type        | Description                                       | typeof              | Example                               |
+| ----------- | ------------------------------------------------- | ------------------- | ------------------------------------- |
+| `undefined` | Variable is declared but **not assigned a value** | `"undefined"`       | `let a;` → `a === undefined`          |
+| `null`      | Variable is explicitly set to have **no value**   | `"object"`          | `let a = null;`                       |
+| Undeclared  | Variable is **not declared at all** in any scope  | ❌ Error if accessed | `console.log(x)` → ❌ `ReferenceError` |
+
+=> What is Object.freeze() for?
+Object.freeze() is used to make an object immutable. Once an object is frozen, you cannot add, remove, or modify its properties. 
+This is useful for creating constants or ensuring that an object remains unchanged throughout the program.
+
+=> What is Object.seal() for?
+Object.seal() is used to prevent new properties from being added to an object and to mark all existing properties as non-configurable. 
+This means you can still modify the values of existing properties, but you cannot delete them or add new ones. 
+Doing so will throw errors in strict mode but fail silently in non-strict mode. In the following examples, you can uncomment 
+the 'use strict' comment to see this.
+
+=> What is Object.preventExtensions() for?
+Object.preventExtensions() is a method in JavaScript that prevents new properties from being added to an object. However, 
+it does not affect the deletion or modification of existing properties. This method is useful when you want to ensure that an object 
+remains in a certain shape and no additional properties can be added to it.
+
+=> How is Promise.all() different from Promise.allSettled()?
+Promise.all() and Promise.allSettled() are both methods for handling multiple promises in JavaScript, but they behave differently. 
+Promise.all() waits for all promises to resolve and fails fast if any promise rejects, returning a single rejected promise. 
+Promise.allSettled(), on the other hand, waits for all promises to settle (either resolve or reject) and returns an array of 
+objects describing the outcome of each promise.
+
+=> 

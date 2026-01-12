@@ -1,0 +1,16 @@
+Tree Traversal techniques include various ways to visit all the nodes of the tree. Unlike linear data structures
+(Array, Linked List, Queues, Stacks, etc) which have only one logical way to traverse them, trees can be traversed in different ways.
+In this article, we will discuss all the tree traversal techniques along with their uses.
+
+There are multiple tree traversal techniques that decide the order in which the nodes of the tree are to be visited.
+These are defined below:
+=> Depth First Search or DFS
+    Inorder Traversal
+    Preorder Traversal
+    Postorder Traversal
+=> Level Order Traversal or Breadth First Search or BFS
+
+Inorder traversal visits the node in the order: Left -> Root -> Right
+Preorder traversal visits the node in the order: Root -> Left -> Right
+Postorder traversal visits the node in the order: Left -> Right -> Root
+Level Order Traversal visits all nodes present in the same level completely before visiting the next level.

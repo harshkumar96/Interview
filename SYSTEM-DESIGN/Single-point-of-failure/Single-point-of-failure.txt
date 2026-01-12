@@ -1,0 +1,40 @@
+=> Single Point of Failure (SPOF)
+    A Single Point of Failure is any component in a system whose failure will cause the entire system to stop working.
+    A single point of failure is any component whose failure can bring down the entire system, and it is avoided using redundancy, replication, and failover mechanisms.
+    A Single Point of Failure is any component whose failure causes system-wide unavailability. SPOFs exist across infrastructure, network, data, application, process, and human 
+    layers, and are mitigated through redundancy, replication, automated failover, isolation, and continuous testing.
+    In reality, SPOF can be:
+    | Category       | Example                            |
+    | -------------- | ---------------------------------- |
+    | Infrastructure | Single EC2, single disk            |
+    | Network        | One load balancer, one NAT gateway |
+    | Data           | One DB primary, no replica         |
+    | Software       | One cron job, one scheduler        |
+    | Config         | One API key, one env variable      |
+    | Human          | Only one person knows prod         |
+    | Process        | Manual deployment                  |
+    | Time           | Token expiration at midnight       |
+    | Geography      | One AZ / one region                |
+
+=> SPOF vs Bottleneck (Important)
+    | SPOF                  | Bottleneck           |
+    | --------------------- | -------------------- |
+    | Failure = system DOWN | Slow but still works |
+    | Binary (up/down)      | Gradual degradation  |
+    | Availability issue    | Performance issue    |
+
+=> SPOF Failure Modes (How Things Actually Die)
+    | Failure Type    | Example                              |
+    | --------------- | ------------------------------------ |
+    | Hard failure    | Server crash                         |
+    | Soft failure    | Memory leak                          |
+    | Slow failure    | GC pauses                            |
+    | Cascading       | DB slow → threads blocked → app down |
+    | Split brain     | Two leaders writing                  |
+    | Thundering herd | Cache miss storm                     |
+    | Poison message  | Consumer stuck                       |
+
+=> 
+
+
+

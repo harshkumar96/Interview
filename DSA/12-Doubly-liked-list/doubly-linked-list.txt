@@ -1,0 +1,35 @@
+=> Explain Doubly Linked list
+    A doubly linked list is a more complex data structure than a singly linked list, but it offers several advantages. The main advantage of a doubly linked list 
+    is that it allows for efficient traversal of the list in both directions. This is because each node in the list contains a pointer to the previous node and a 
+    pointer to the next node. This allows for quick and easy insertion and deletion of nodes from the list, as well as efficient traversal of the list in both 
+    directions.
+    Representation of Doubly Linked List in Data Structure
+    -> Data
+    -> A pointer to the next node (next)
+    -> A pointer to the previous node (prev)
+
+=> Advantages of Doubly Linked List
+    -> Bidirectional Traversal - You can traverse forward (using next) as well as backward (using prev).
+    -> Efficient Deletion - Given a pointer to a node, you can delete it in O(1) time (no need to traverse from the head), since you can update both prev and next.
+    -> Insertion at Both Ends - Insertion at head or tail is efficient because you can update both directions easily.
+    -> Easy to Implement Deque / Navigation Features - Useful for undo/redo, browser history, and music playlist navigation, where both forward and backward movement 
+    is needed.
+
+=> Disadvantages of Doubly Linked List
+    -> Extra Memory Per Node - Each node requires an additional pointer (prev), making DLL more memory-consuming than singly linked list.
+    -> More Complex Implementation - Both prev and next must be handled carefully during insertion and deletion, which increases chances of errors (broken links, 
+    null pointer issues)
+    -> Slower Operations Due to Overhead - Extra pointer manipulations during insertion/deletion cause slightly more overhead compared to singly linked list.
+    -> Not Cache-Friendly - Like singly linked list, nodes are scattered in memory, so traversals may be slower compared to arrays due to poor locality of reference.
+
+=> Operations: 
+    -> push
+    -> pop
+    -> shift
+    -> unshift
+    -> get
+    -> set
+    -> insert
+    -> remove
+    -> reverse
+    -> print
