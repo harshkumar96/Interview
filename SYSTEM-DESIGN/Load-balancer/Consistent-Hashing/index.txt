@@ -1,0 +1,25 @@
+=> Consistent Hashing is generally used for distributing request to equally between horizontal servers 
+=> Consistent hashing is a clever technique used in distributed systems to distribute data across a cluster of nodes. 
+    It’s designed to minimize reorganization when nodes are added or removed, preventing the "herd effect" where a single 
+    change causes a massive reshuffle of data.
+=> How Consistent Hashing Works:
+    Consistent hashing solves this by mapping both servers and data onto a conceptual circular space, often called a Hash Ring.
+    1. The Hash Ring
+    Imagine a circle with a range of values (for example, 0 to $2^{32}-1$). Both the servers and the data keys are hashed 
+    using the same algorithm and placed somewhere on this ring.
+    2. Locating a Server
+    To find which server holds a specific piece of data:
+    -> Locate the key on the ring.
+    -> Move clockwise until you encounter the first server.
+    -> That server is responsible for that key.
+    3. Adding or Removing Nodes
+    -> Adding a node: If a new server is added, it only "takes over" keys from the server immediately clockwise of it. 
+        Only a small fraction of keys need to move.
+    -> Removing a node: If a server goes down, its keys simply "fall" to the next server clockwise. The rest of the ring 
+        remains unaffected.
+=> The Problem of "Hotpots" (Virtual Nodes)
+    In a basic ring, servers might be distributed unevenly, leading to some servers handling way more data than others. 
+    To fix this, we use Virtual Nodes (or V-nodes).
+    Instead of placing a server on the ring once, we hash it multiple times (e.g., Server1_A, Server1_B, Server1_C). This 
+    scatters the server across the ring, ensuring a much more uniform distribution of data and better load balancing.
+
