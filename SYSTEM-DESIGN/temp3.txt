@@ -50,7 +50,11 @@
 => ipv4 and ipv6 Difference
 => protocols
 => Grpc
+=> DNS Geo Routed
+=> Async and Sync communication
+=> How to dyncamically increase consumer and Decreace them based on some conditions like Queue size or topic size
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-=> 
+=> TTL -> Time To Live 
+=> CDN -> Content Delivery Network
+=> 7 Layers

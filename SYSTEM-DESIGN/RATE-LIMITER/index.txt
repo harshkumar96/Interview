@@ -1,0 +1,124 @@
+=> Define a rate limiter
+    A Rate Limiter is used to limit the number of request comming from clinet or service over a threshold
+    if api request is exceed more than threshold all excess api request are block examples
+    -> User cannot write more than 2 request per second
+    -> You cannot create more than 10 account per day from same ip address
+    -> you can not claim more then 5 rewards per week from same device
+
+=> Use of a rate limitor
+    -> Prevent resource starvation cause by Denial of Service(DOS)
+    -> Reduce Cost by limiting excess requests means fewer Server and allocation more resource to high priority api 
+    rate limiting is very important who use third party paid api service
+    -> Prevent servers from being over loaded in cases bot trying put load on server
+
+=> Design Requirements
+    -> Design server-side rate limiter
+    -> Rate limiter should be flexible enough to support different set of throttle rules like api, device or ip based or 
+    any combo
+    -> The system should be able to handle large number of request
+    -> The System will work in a distributed enviornment
+    -> Exception Handling Need to inform user who are being throttle
+    -> Accurately limit excessive 
+    -> Low latency the rate limiter should not slow down HTTP request
+    -> use little memory as possbile
+    -> High Fault tolerance. If there are any problem with rate limitor it should not affect entire system
+
+=> Algo of rate limiters
+    Token Bucket: The Token Bucket algorithm is a rate-limiting mechanism used to control how many requests a system 
+    can process over time while still allowing short bursts of traffic. In this approach, tokens are added to a bucket 
+    at a fixed rate up to a maximum capacity, and each incoming request consumes one token. If a token is available, 
+    the request is allowed; if the bucket is empty, the request is rejected or delayed. This design ensures that the 
+    average request rate does not exceed the configured limit, but temporary spikes are still permitted as long as enough 
+    tokens have accumulated. Because of its simplicity, efficiency, and burst-friendly behavior, the Token Bucket algorithm 
+    is widely used in API gateways, distributed systems, and network traffic shaping.
+    Pro: 
+        -> The algo is easy to implement 
+        -> Memory efficient
+        -> Token Bucket allow burst of traffic for a short period of time as long as there are token in bucket
+    Cons: 
+        -> Two parameters are bucket size and toke refill rate, it might be challenging tune them properly
+
+    Leak Bucket: The Leaky Bucket algorithm is a rate-limiting mechanism that enforces a strict, constant output rate 
+    for requests or data. It works by placing incoming requests into a bucket (queue) that leaks at a fixed rate, regardless 
+    of how bursty the incoming traffic is. If requests arrive faster than the leak rate, they are queued; if the bucket 
+    becomes full, any additional requests are dropped or rejected. This behavior smooths out traffic by converting irregular 
+    bursts into a steady flow, making it useful for protecting systems that require predictable processing rates. However, 
+    unlike the Token Bucket algorithm, the Leaky Bucket does not allow bursts, which can lead to request loss during sudden 
+    traffic spikes.
+    Pros:
+        -> Memory efficient as limited queue size
+        -> Request are process at fixed rate therefore it suitable for use cases that a stable outflow is needed
+    Cons: 
+        -> If burst of traffic is filled queue with old request and if they are not process in time recent request will 
+        be rate limited
+        -> Two parameters are queue size and outflow rate, it might be challenging tune them properly
+
+    Fixed Window Counter: The Fixed Window Counter algorithm is a simple rate-limiting technique that restricts how many 
+    requests a client can make within a fixed time interval, such as 100 requests per minute. Time is divided into 
+    non-overlapping windows, and each client has a counter that tracks the number of requests made in the current window. 
+    When a request arrives, the system checks the counter; if it is below the allowed limit, the request is accepted and 
+    the counter is incremented, otherwise the request is rejected. Once the time window expires, the counter is reset to 
+    zero and a new window begins. Although this approach is easy to implement and efficient in terms of memory and 
+    computation, it suffers from a burst problem where a client can send a large number of requests at the boundary of 
+    two windows, making it less accurate compared to more advanced algorithms like sliding window or token bucket.
+    Pros: 
+        -> Memory efficiency
+        -> Easy to understand
+        -> Resetting available quota at end of unit time windows fits certain use cases.
+    Cons: 
+        -> Spike in traffic at end of window can cause more request than allowed quota to pass through
+
+    Sliding Window Log: The Sliding Window Log algorithm is a more accurate rate-limiting technique that tracks the exact 
+    timestamps of each request made by a client. For every incoming request, the system stores its timestamp in a log 
+    (usually a list or queue) and removes all entries that fall outside the defined time window (for example, requests 
+    older than the last 60 seconds). If the number of remaining timestamps in the log is less than or equal to the allowed 
+    limit, the request is accepted and its timestamp is added; otherwise, the request is rejected. This approach eliminates 
+    the burst problem seen in fixed window counters because limits are enforced over a continuously moving time window, 
+    but it comes at the cost of higher memory usage and processing overhead, especially for high-traffic systems.
+    Pros: 
+        -> Rate limiting implementation by this is very accurate. In any rolling window, request will not exceed the rate 
+        limit
+    Cons: 
+        -> The algo consume alot of memory because it maintain timestamp
+    
+    Sliding Window Counter: The Sliding Window Counter algorithm is a rate-limiting technique that improves upon the fixed 
+    window counter by smoothing traffic across window boundaries without storing individual request timestamps. Instead of 
+    maintaining a full log, it keeps two counters: one for the current window and one for the previous window. When a request 
+    arrives, the algorithm calculates a weighted sum based on how much of the current time window has elapsed and how much 
+    influence the previous window should still have. If this calculated count is within the allowed limit, the request is 
+    accepted; otherwise, it is rejected. This approach significantly reduces the burst problem of fixed windows while being 
+    more memory-efficient than the sliding window log, making it a good balance between accuracy and performance for 
+    high-throughput systems.
+    Pros: 
+        -> It smooths out spikes in traffic because the rate based on the average rate of the previous window
+        -> Memory efficient
+    Cons:
+        -> The Sliding Window Counter algorithm has a few important drawbacks. Because it relies on an approximation 
+        weighted averages rather than exact request timestamps, it is not perfectly accurate and can still allow small 
+        bursts of traffic in edge cases.
+
+
+=> High Level Design Decision
+    -> We will create rate limiter middleware that will throttle requests/api
+    -> We will send HTTP error code 429 "Too many request" 
+    -> We will use redis to config rate limitter 
+    -> Rate Limitter Headers 
+        -> Ratelimitting remaining: remaining limit of request
+        -> Ratelimitting limit: number of class in particular window
+        -> Ratelimitting retry: number of second after till wait for next request
+    -> There two options in which one is drop request or second option is queue that request and work with it later
+    -> rules for rate limiter is stored in disk 
+    -> when request come rate limitter pull request from disk store on cache and get counter and timestamp
+    -> if counter exceed quota it send 429 to client or pass to api server to process
+
+=> Rate Limiter for distributed system
+    problem:
+        -> Race Condition
+        -> Synchnronization issue
+    => Design By your self it must for distributed system deployment in multiple data center with eventual consistency
+    consider performance optimization and monitoring
+    
+
+
+
+=> Too many Bucket problem and how other handle it how global bucket works
