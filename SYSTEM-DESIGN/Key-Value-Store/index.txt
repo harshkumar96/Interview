@@ -1,0 +1,70 @@
+=> Need to design a key value store where key can be a string or hash value and value can be any object string or list
+=> Design Constraints 
+    -> Size of key value pair is small less than 10KB
+    -> Ability to store big data
+    -> High Availability: System respond quickly even in failure 
+    -> High Scalability: The system can be scale to support large dataset
+    -> Automatic Scaling: The system can add or delete servers according to traffic
+    -> Low latency 
+    -> Tunable Consistency
+
+=> Optimization Can be done 
+    -> Data Compression 
+    -> Store only frequently used data in memory rest on disk
+
+=> System components
+    -> Data Partitions
+    -> Data Replications
+    -> Consistency
+    -> Inconsistency resolution
+    -> Handling failure
+    -> System Architect Design
+    -> Write Path
+    -> Read Path
+
+=> Data Partition
+    For a large application it is infeasible to fit complete dataset into a single servers. so simple way it to split the data into 
+    multiple partitions and store it on multiple servers 
+    There are two challenges that occur during partition data 
+    1) Distributing data into multiple servers evenly 
+    2) Minimize data movement when nodes are added and removed
+    => We cam use consistent hashing for that at high level number of virtual nodes are directly proportional to server capacity
+    means more servers we have more virtual nodes we will have less capacity less number of nodes on hash ring
+
+=> Data Replication
+    Data is replicated with N number of servers with on the ring when move clockwise but with virtual nodes we will choose N number of
+    unique servers and in different data centers
+
+=> Consistency
+    N = Number of replicas 
+    W = A Write quorum with size W, Write operations must be acknowledged from W replicas
+    R = A Read quorum with size R, Read operations must be acknowledged from R replicas
+    The configurations W, R, N is typically tradeoff between latency and Consistency
+    -> if W=1 or R=1, an operation will return quickly because coordinator must only get acknowledged from one replicas
+    -> if W Or R > 1, the system offer better Consistency but slow query because coordinator must wait for slowest replica
+    -> if W+R>N, Strong Consistency guaranteed there must be at least one overlapping node that has latest data to ensure 
+    Consistency
+    let consider some cases
+    -> R=1 and W=N, System is optimized for read fast
+    -> W=1 and R=N, System is optimized for write fast
+    -> W+R>N strong Consistency(generally N=3, W=2, R=2)
+    -> W+R<=N strong Consistency not guaranteed
+
+=> Consistency Models
+    Strong Consistency: A read operation return value corresponding to result of the most updated write data item. 
+    Client never see outdated data 
+    Weak Consistency: Subsequent read operation might see outdated data
+    Eventual Consistency: Given enough time, all updates get propagated and all replica are consistent
+
+=> Summary 
+    Ability to store big data = use consistent hashing to spread load across multiple server
+    High Availability reads = Data Replication multiple-data center setups
+    Highly Available write = versions and conflict resolution with vector clocks 
+    Dataset partition = Consistent hashing
+    Incremental Scalability = Consistent hashing
+    Heterogeneity = Consistent hashing
+    Tunable Consistency = quorum consensus
+    Handling Temporary Failure = Sloppy quorum and hinted handoff
+    Handling permanent failure = Merkle tree 
+    Handling Datacenter outage = Cross Datacenter Replication
+    
